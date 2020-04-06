@@ -13,7 +13,8 @@
 
 
 ### 每天一个 MDN API 学习
-
+[Object.defineProperty](./每天一个 MDN API 学习/Object/Object.defineProperty.md)
+[Proxy](./每天一个 MDN API 学习/Proxy/Proxy.md)
 
 
 ### Vue 学习
