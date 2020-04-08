@@ -2,4 +2,5 @@
 
 ## [Object.defineProperty](./Object/Object.defineProperty.md)
 ## [Proxy](./Proxy/Proxy.md)
-## [Object.assign](./Proxy/Object.assign.md)
+## [Object.assign](./Object/Object.assign.md)
+## [Object.create](./Object/Object.create.md)
