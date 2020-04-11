@@ -5,3 +5,4 @@
 ## [Object.assign](./Object/Object.assign.md)
 ## [Object.create](./Object/Object.create.md)
 ## [Object.entries](./Object/Object.entries.md)
+## [Object,freeze](./Object/Object.freeze.md)
