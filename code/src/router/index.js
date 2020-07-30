@@ -20,6 +20,24 @@ const routes = [{
         name: 'todoList',
         component: () =>
             import ('../views/TodoList.vue')
+    },
+    {
+        path: '/parent',
+        name: 'parent',
+        component: () =>
+            import ('../views/Parent.vue')
+    },
+    {
+        path: '/slotName',
+        name: 'slotName',
+        component: () =>
+            import ('../views/SlotName.vue')
+    },
+    {
+        path: '/slotScopes',
+        name: 'slotScopes',
+        component: () =>
+            import ('../views/slotScopes.vue')
     }
 ]
 
