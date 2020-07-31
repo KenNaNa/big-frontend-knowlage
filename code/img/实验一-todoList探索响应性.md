@@ -27,11 +27,11 @@ Vue是用于构建用户界面的渐进框架，具有全家桶 vue-router路由
 node -v
 ```
 
-![node-v](E:\前端学习\big-frontend-knowlage\code\img\node-V.png)
+![node-v](.\node-V.png)
 
 如果出现版本号，说明环境已经安装，如果没有出现版本号，说明环境没有安装，我们需要到    node  官网进行下载对应的系统的 node 安装包，这里附上 node 的官网，同学们自行安装 [Node.js 中文官网](http://nodejs.cn/download/)                             
 
-![Node.js 安装包](E:\前端学习\big-frontend-knowlage\code\img\node.png)
+![Node.js 安装包](.\node.png)
 
 #### vue 环境测试
 
@@ -43,7 +43,7 @@ vue -V
 
 我们发现实验环境的 vue-cli 版本为 3.11.0
 
-![vue-cli-v](E:\前端学习\big-frontend-knowlage\code\img\Vue.png)
+![vue-cli-v](.\Vue.png)
 
 明显不符合我们的要求，所以我们要升级一下 vue-cli，同学们输入以下命令，先卸载 vue-cli 
 
@@ -65,7 +65,7 @@ vue -V
 
 发现 vue-cli 升级到了 4.4.6 版本
 
-![vue-cli-v4.4.6](E:\前端学习\big-frontend-knowlage\code\img\vue-V.png)
+![vue-cli-v4.4.6](.\vue-V.png)
 
 ok，至此我们的环境已经准备好了，万事俱备只欠东风了，接下来我们就来搭建一个 vue 初始化项目
 
@@ -75,7 +75,7 @@ ok，至此我们的环境已经准备好了，万事俱备只欠东风了，接
 
 首先我们新建一个 code 目录，我们进入 code 的目录
 
-![cd-code](E:\前端学习\big-frontend-knowlage\code\img\cd-code.png)
+![cd-code](.\cd-code.png)
 
 输入以下命令
 
@@ -91,15 +91,15 @@ vue create .
 - CSS Pre-processors 样式预处理器
 - Linter/Formatter 格式化
 
-![select](E:\前端学习\big-frontend-knowlage\code\img\Snipaste_2020-07-29_22-19-11.png)
+![select](.\Snipaste_2020-07-29_22-19-11.png)
 
 然后一步步回车，所有输入都选择输入`y`，在`CSS Pre-processors`预处理器那里选择 `node-sass`安装即可，进入项目创建
 
-![create-pro](E:\前端学习\big-frontend-knowlage\code\img\Snipaste_2020-07-28_23-03-39.png)
+![create-pro](.\Snipaste_2020-07-28_23-03-39.png)
 
 创建之后，我们去看看 vue2.x 目录结构
 
-![code](E:\前端学习\big-frontend-knowlage\code\img\Snipaste_2020-07-28_23-07-49.png)
+![code](.\Snipaste_2020-07-28_23-07-49.png)
 
 此时的`package.json`
 
@@ -140,7 +140,7 @@ vue create .
 vue add vue-next
 ```
 
-![](E:\前端学习\big-frontend-knowlage\code\img\vue-add-vue-next.png)
+![](.\vue-add-vue-next.png)
 
 升级之后，我们再来看看`package.json`，我们发现 vue 版本为 3.0 beta, vue-router 4.0 alpha，vuex 4.0 alpha
 
@@ -259,7 +259,7 @@ export default {
 </script>
 ```
 
-![](E:\前端学习\big-frontend-knowlage\code\img\Snipaste_2020-07-29_22-44-49.png)
+![](.\Snipaste_2020-07-29_22-44-49.png)
 
 - `edit`编辑操作，我们点击编辑，下面的内容会出现在输入框中，这就是我们 `v-model`指令的强大之处，在 vue2.x 中 vue 内部双向绑定的机制是用Object.defineProperty()递归覆盖数据对象内所有属性的getter / setter。除了正常运行外，它还会在所有设置器中注入一个触发器，并在所有获取器中注入一个跟踪器。此外，它Dep每次都会在内部创建一个小实例，以记录所有依赖于此属性的计算。
   每当我们在属性中设置一个值时，它将调用setter，该setter将重新评估Dep实例中的那些相关计算。然后，您可能会问我们如何记录所有相关的计算。事实是，每当我们定义一个watch函数或DOM更新函数之类的计算时，它都会首先运行一次-有时它作为初始化运行，有时只是空运行。在运行过程中，它将触碰其所依赖的吸气剂中的每个跟踪器。每个跟踪器会将当前的计算功能推入相应的Dep实例。
@@ -275,7 +275,7 @@ edit(index) {
 },
 ```
 
-![](E:\前端学习\big-frontend-knowlage\code\img\Snipaste_2020-07-29_22-58-19.png)
+![](.\Snipaste_2020-07-29_22-58-19.png)
 
 - `update`更新操作，我们是通过下表拿到元素对象，对元素的 `key`值进行修改，我们知道如果是 `vue2.x` 我们这样做是不会及时更新到`DOM`，是因为 `Object.defineProperty()`局限性，没有及时更新到 `DOM` 上面，但是在 `vue3`，我们可以清楚的看到是及时响应上去的
 
@@ -294,7 +294,7 @@ update() {
 
 我们将性别`男`修改为性别`女`，然后点击`更新`按钮，发现下面修改了
 
-![](E:\前端学习\big-frontend-knowlage\code\img\Snipaste_2020-07-29_23-02-55.png)
+![](.\Snipaste_2020-07-29_23-02-55.png)
 
 - `del` 删除操作
 
@@ -307,7 +307,7 @@ del(index) {
 
 点击删除之后，我们发现下面的姓名清单没有了
 
-![](E:\前端学习\big-frontend-knowlage\code\img\Snipaste_2020-07-29_23-06-33.png)
+![](.\Snipaste_2020-07-29_23-06-33.png)
 
 - `clear`清空操作，我们先新建几个姓名清单
 
@@ -318,7 +318,7 @@ clear() {
 }
 ```
 
-![](E:\前端学习\big-frontend-knowlage\code\img\Snipaste_2020-07-29_23-08-16.png)
+![](.\Snipaste_2020-07-29_23-08-16.png)
 
 点击清空按钮按钮之后，我们发现所有数据都清空，如果我们使用的是 `vue2.x`版本，我们会发现 `this.list.length = 0`没有效果，下面的姓名清单没有被清空，只有我们这样设置的时候 `this.list = []`才会被清空，这是为什么呢？
 
@@ -425,7 +425,7 @@ export default {
 
 ```
 
-![](E:\前端学习\big-frontend-knowlage\code\img\Snipaste_2020-07-29_23-28-39.png)
+![](.\Snipaste_2020-07-29_23-28-39.png)
 
 我们可以发现，其实上面是 `vue2.x`的写法，在 `vue3.0`一样是兼容的，接下来我们就来改造一下代码，将 todoList 的代码升级到 `vue3.0`版本
 
@@ -483,7 +483,7 @@ setup() {
 </template>
 ```
 
-![](E:\前端学习\big-frontend-knowlage\code\img\Snipaste_2020-07-30_00-00-35.png)
+![](.\Snipaste_2020-07-30_00-00-35.png)
 
 
 
