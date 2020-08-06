@@ -1,11 +1,14 @@
 <template>
-  <div>
+  <div class="todo-list">
+    <div class="header">todoList</div>
     <input type="text" v-model="name" placeholder="请输入名字" />
     &nbsp; &nbsp;
     <input type="text" v-model="sex" placeholder="请输入性别" />
     &nbsp; &nbsp;
     <button @click="add" v-if="indexObj.index === null">添加</button>
     <button @click="update" v-else>更新</button>
+    &nbsp; &nbsp;
+    <button @click="clear">清空数组</button>
     <ul>
       <li v-for="(item, index) in list" :key="index">
         <span>名字为：{{ item.name }}</span>
@@ -17,7 +20,6 @@
         <button @click="del(index)">删除</button>
       </li>
     </ul>
-    <button @click="clear">清空数组</button>
   </div>
 </template>
 
@@ -28,7 +30,7 @@ export default {
   setup() {
     let list = ref([]);
     let name = ref("");
-    let sex = ref('')
+    let sex = ref("");
     let indexObj = reactive({ index: null });
     const edit = index => {
       let item = list.value[index];
@@ -39,6 +41,9 @@ export default {
     };
     const del = index => {
       list.value.splice(index, 1);
+      indexObj.index = null;
+      name.value = "";
+      sex.value = "";
     };
     const update = () => {
       if (!name.value || !sex.value) {
@@ -80,6 +85,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.todo-list {
+  width: 600px;
+  margin: auto;
+  .header {
+    height: 30px;
+    line-height: 30px;
+  }
+  ul {
+    li {
+      // display: flex;
+      // justify-content: space-between;
+      text-align: left;
+      margin-bottom: 10px;
+    }
+  }
+}
+
 li {
   list-style: none;
 }
