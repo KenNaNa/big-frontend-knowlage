@@ -38,7 +38,37 @@ const routes = [{
         name: 'slotScopes',
         component: () =>
             import ('../views/slotScopes.vue')
-    }
+    },
+    {
+        path: '/markRaw',
+        name: 'markRaw',
+        component: () =>
+            import ('../views/markRaw.vue')
+    },
+    {
+        path: '/DynamicArguments',
+        name: 'DynamicArguments',
+        component: () =>
+            import ('../views/DynamicArguments.vue')
+    },
+    {
+        path: '/globalApi',
+        name: 'globalApi',
+        component: () =>
+            import ('../views/globalApi.vue')
+    },
+    {
+        path: '/transition',
+        name: 'transition',
+        component: () =>
+            import ('../views/Transition.vue')
+    },
+    {
+        path: '/tele',
+        name: 'tele',
+        component: () =>
+            import ('../views/tele.vue')
+    },
 ]
 
 const router = createRouter({

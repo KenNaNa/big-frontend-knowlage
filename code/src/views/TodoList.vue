@@ -1,6 +1,6 @@
 <template>
   <div class="todo-list">
-    <div class="header">todoList</div>
+    <div class="header">todo lists</div>
     <input type="text" v-model="name" placeholder="请输入名字" />
     &nbsp; &nbsp;
     <input type="text" v-model="sex" placeholder="请输入性别" />
@@ -15,9 +15,11 @@
         &nbsp; &nbsp;
         <span>性别为：{{ item.sex }}</span>
         &nbsp; &nbsp;
-        <button @click="edit(index)">编辑</button>
-        &nbsp; &nbsp;
-        <button @click="del(index)">删除</button>
+        <div class="btndiv">
+          <button class="btn" @click="edit(index)">编辑</button>
+          &nbsp; &nbsp;
+          <button class="btn" @click="del(index)">删除</button>
+        </div>
       </li>
     </ul>
   </div>
@@ -89,15 +91,39 @@ export default {
   width: 600px;
   margin: auto;
   .header {
-    height: 30px;
-    line-height: 30px;
+    height: 60px;
+    line-height: 60px;
+    background-color: #3e3e3e;
+    color: #dddddd;
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
+  button {
+    display: contents;
+    cursor: pointer;
   }
   ul {
+    padding: 0;
     li {
-      // display: flex;
-      // justify-content: space-between;
       text-align: left;
+      height: 30px;
       margin-bottom: 10px;
+      background-color: #ffffff;
+      line-height: 30px;
+      border-left: 5px solid #629a9c;
+      border-radius: 5px;
+      padding-left: 30px;
+      padding-right: 30px;
+      color: #ffdfa5;
+      .btndiv {
+        float: right;
+      }
+      .btn {
+        margin-right: 20px;
+        display: contents;
+        cursor: pointer;
+        text-align: right;
+      }
     }
   }
 }
