@@ -69,6 +69,30 @@ const routes = [{
         component: () =>
             import ('../views/tele.vue')
     },
+    {
+        path: '/async',
+        name: 'async',
+        component: () =>
+            import ('../views/TestSync.vue')
+    },
+    {
+        path: '/prose',
+        name: 'prose',
+        component: () =>
+            import ('../views/Prose.vue')
+    },
+    {
+        path: '/toast',
+        name: 'toast',
+        component: () =>
+            import ('../views/TestToast.vue')
+    },
+    {
+        path: '/route',
+        name: 'route',
+        component: () =>
+            import ('../views/TestRoute.vue')
+    }
 ]
 
 const router = createRouter({

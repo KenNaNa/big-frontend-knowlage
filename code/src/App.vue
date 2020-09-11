@@ -3,7 +3,7 @@
     <div id="nav">
         <router-link to="/">Home</router-link>
         <router-link to="/about">About</router-link>
-        <router-link to="/todoList">todoList</router-link>
+        <!--<router-link to="/todoList">todoList</router-link>
         <router-link to="/parent">slots</router-link>
         <router-link to="/slotName">slotName</router-link>
         <router-link to="/slotScopes">slotScopes</router-link>
@@ -14,6 +14,10 @@
         <router-link to="/globalApi">globalApi</router-link>
         <router-link to="/transition">transition</router-link>
         <router-link to="/tele">tele</router-link>
+        <router-link to="/async">async</router-link>
+        <router-link to="/prose">prose</router-link>
+        <router-link to="/toast">toast</router-link>-->
+        <router-link to="/route">route</router-link>
     </div>
     <router-view />
 </div>
