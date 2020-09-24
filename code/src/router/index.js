@@ -92,6 +92,11 @@ const routes = [{
         name: 'route',
         component: () =>
             import ('../views/TestRoute.vue')
+    },
+    {
+        path: '/counter',
+        name: 'Counter',
+        component: () => import('../views/TestCounter.vue')
     }
 ]
 
