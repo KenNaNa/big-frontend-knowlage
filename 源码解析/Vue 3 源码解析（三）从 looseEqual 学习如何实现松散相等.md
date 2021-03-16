@@ -1,4 +1,4 @@
-# Vue 3 源码解析（一）从 looseEqual 学习如何实现松散相等
+# Vue 3 源码解析（三）从 looseEqual 学习如何实现松散相等
 
 ### isArray
 
