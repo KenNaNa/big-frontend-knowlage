@@ -1,0 +1,1 @@
+[深入理解JavaScript的执行流程，执行上下文EC、变量对象VO、活动对象AO、作用域Scope（链）](https://blog.csdn.net/yangxinxiang84/article/details/113051811?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&dist_request_id=1328641.10297.16155372256670345&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control)
