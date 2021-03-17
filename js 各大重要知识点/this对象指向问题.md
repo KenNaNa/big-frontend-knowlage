@@ -1,8 +1,8 @@
 # 什么情况下会涉及 `this`
 
-**函数作用域的情况下，才会有 `this` 绑定问题**
-**或者 `class` 类**
-**使用 `call,apply, bind`**
+- **函数作用域的情况下，才会有 `this` 绑定问题**
+- **或者 `class` 类**
+- **使用 `call,apply, bind`**
 
 1. 严格模式 "use strict"
 2. 非严格模式
