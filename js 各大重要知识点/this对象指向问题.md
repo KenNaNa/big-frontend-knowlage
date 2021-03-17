@@ -201,7 +201,65 @@ fn() // "Ken" this 指向 window
 
 从上面的观察，以及实践，我们或许可以得出一个结论：
 
-`this` 指向问题跟作用域有关系， 
+- **箭头函数 `this` 指向问题跟作用域有关系，他会沿着作用域链一层层往外找，最先找到那个具有作用域，就将 `this` 绑定在那个作用域上，如果找不到，就直接绑定在全局作用域上 **
+
+- **普通函数的 `this` 指向，取决于在那个对象上执行，this 就执行谁**
+
+# call,apply.bind
+
+发现个小问题，貌似 箭头函数无法在执行阶段改变 `this` 指向问题
+
+```js
+var a = "Ken"
+var obj = {
+    a: "小仙女",
+    b: {
+        a: "===>obj.b",
+        fn: () => {console.log("obj.b===>", this.a)}
+    }
+}
+
+obj.b.fn() // "Ken" this 指向 window
+
+var fn = obj.b.fn
+fn.call(obj) // "Ken" this 指向 window
+fn.apply(obj) // "Ken" this 指向 window
+fn.bind(obj)() // "Ken" this 指向 window
+```
+
+非箭头函数情况：
+
+```js
+var a = "Ken"
+var obj = {
+    a: "小仙女",
+    b: {
+        a: "===>obj.b",
+        fn: function() {console.log("obj.b===>", this.a)}
+    }
+}
+
+obj.b.fn() // "====>obj.b" this 指向 obj.b
+
+var fn = obj.b.fn
+fn.call(obj) // this 指向 obj // "小仙女"
+
+fn.apply(obj) // this 指向 obj // "小仙女"
+
+fn.bind(obj)() // this 指向 obj // "小仙女"
+```
+
+# class 类
+
+```js
+class Person {
+    constructor(name) {
+        this.name = name
+        console.log("Person===>", this) // this 指向实例对象
+    }
+}
 
 
+var p = new Person("小仙女")
+```
 
