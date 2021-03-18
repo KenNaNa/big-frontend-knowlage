@@ -94,4 +94,36 @@ var b={ m: 1 };
 
 ![](https://github.com/zhangxinmei/summary/raw/master/img/p7.png)
 
+# 基本类型赋值问题
+
+```js
+var a = 20;
+var b = 30;
+var c = b;
+var c = 40
+console.log(a); // 20
+console.log(b); // 30
+console.log(40); // 40
+```
+
+在面试过程中，我可能经常会被问道这是为啥？这是因为在栈内存中，数据发生赋值的情况，系统会自动为其创建新的内存，两个值是互相独立的，没有影响，尽管 c 的值被修改了。
+
+![](https://github.com/zhangxinmei/summary/raw/master/img/p3.png)
+
+# 引用类型赋值问题
+
+```js
+var a = {name: "Ken"}
+var b = a
+b.name = "小仙女"
+console.log(a); // {name: "小仙女"}
+console.log(b); // {name: "小仙女"}
+```
+对于引用类型赋值问题，因为我们已经知道引用类型的存储是栈内存和堆内存共同完成的，
+
+一开始m保存了一个实例化的对象，这时将m赋值给n后，m和n都指向了这个实例化的对象，
+
+虽然他们的内存地址不一样，但是他们指向的对象是一样的，因此只要其中一个引用类型改变另一个引用类型也会跟着改变。
+
+![](https://github.com/zhangxinmei/summary/raw/master/img/p4.png)
 
