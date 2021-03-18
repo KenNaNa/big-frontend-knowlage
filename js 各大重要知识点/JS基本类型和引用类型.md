@@ -127,3 +127,8 @@ console.log(b); // {name: "小仙女"}
 
 ![](https://github.com/zhangxinmei/summary/raw/master/img/p4.png)
 
+
+# 发出疑问
+
+请谈谈深复制跟浅复制？
+
