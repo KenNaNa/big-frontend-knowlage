@@ -217,3 +217,102 @@ var bar = bind( foo, obj );
 var b = bar( 3 ); // 2 3
 console.log( b ); // 5
 ```
+
+es6 提供的 bind 方法
+
+```js
+function foo(something) {
+    console.log( this.a, something );
+    return this.a + something;
+}
+
+var obj = {
+    a: 2
+}
+
+var bar = foo.bind(obj)
+
+var b = bar(3) // 2 3
+
+console.log(b) // 5
+```
+
+循环中的 this 绑定
+
+```js
+function foo(el) {
+    console.log(el, this.id)
+}
+
+var obj = {
+    id: "awesome"
+}
+
+var arr = [1,2,3]
+
+arr.forEach(foo, obj);
+
+// 1 "awesome"
+// 2 "awesome"
+// 3 "awesome"
+```
+
+
+顺便来看看 forEach, map 的核心区分：
+
+```js
+function foo(el) {
+    console.log(el, this.id)
+}
+
+var obj = {
+    id: "awesome"
+}
+
+var arr = [1,2,3]
+
+var res = arr.map(foo, obj);
+
+console.log("map===>", res)
+
+
+var eachRes = arr.forEach(foo, obj)
+
+console.log("each===>", eachRes)
+
+
+// 1 "awesome"
+// 2 "awesome"
+// 3 "awesome"
+// map===> (3) [undefined, undefined, undefined] // 返回数组
+// 1 "awesome"
+// 2 "awesome"
+// 3 "awesome"
+// each===> undefined // 返回undefined
+```
+
+new 操作
+
+使用 new 来调用函数，或者说发生构造函数调用时，会自动执行下面的操作。
+
+- 创建（或者说构造）一个全新的对象。
+- 这个新对象会被执行 [[Prototype]] 连接。
+- 这个新对象会绑定到函数调用的 this。
+- 如果函数没有返回其他对象，那么 new 表达式中的函数调用会自动返回这个新对象。
+
+以下是我根据上面这个思路实现的代码
+
+```js
+function newOP(fn) {
+    var obj = Object.create(null)
+    var fnProto = Object.create(fn.__proto__)
+    obj.__proto__ = fnProto
+
+    var res = fn.apply(obj, arguments)
+
+    return res ? res : obj
+}
+```
+
+# this词法
+
