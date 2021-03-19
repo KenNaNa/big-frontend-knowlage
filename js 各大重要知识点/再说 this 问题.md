@@ -157,5 +157,63 @@ var obj = {
 foo.call( 2 ); // undefined
 ```
 
+### 硬绑定
 
+```js
+function foo() {
+    console.log( this.a )
+}
 
+var obj = {
+    a:2
+}
+
+var bar = function() {
+    foo.call(obj)
+}
+
+bar() // 2
+
+setTimeout(bar, 100) // 2
+```
+
+硬绑定的典型应用场景就是创建一个包裹函数，负责接收参数并返回值：
+
+```js
+function foo(something) {
+    console.log(this.a, something)
+    return this.a + something
+}
+
+var obj = {
+    a: 2
+}
+
+var bar = function() {
+    return foo.apply(obj, arguments)
+}
+
+var b = bar(3) // 2 3
+console.log(b) // 5
+```
+
+另一种使用方法是创建一个可以重复使用的辅助函数：
+
+```js
+function foo(something) {
+ console.log( this.a, something );
+ return this.a + something;
+}
+// 简单的辅助绑定函数
+function bind(fn, obj) {
+ return function() {
+    return fn.apply( obj, arguments );
+ };
+}
+var obj = {
+ a:2
+};
+var bar = bind( foo, obj );
+var b = bar( 3 ); // 2 3
+console.log( b ); // 5
+```
