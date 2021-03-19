@@ -1,6 +1,5 @@
 # 如何实现 MVVM 类 Vue 迷你框架（三）
 
-![image.png](http://image.huawei.com/tiny-lts/v1/images/eac303ef8f65147f913981c80a0683ed_900x614.png@900-0-90-f.png)
 
 接下来我们需要在上节课的基础上，对数据进行响应式处理，大致的框架代码如下：
 
