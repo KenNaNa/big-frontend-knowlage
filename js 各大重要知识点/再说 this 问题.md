@@ -1,0 +1,161 @@
+要知道 `this` 指向问题，需要知道函数调用栈，函数调用的位置。
+
+先来看看以下这个例子：
+
+```js
+function baz() {
+    // 当前调用栈：baz
+    // 因此，当前调用位置是全局作用域
+
+    console.log("baz")
+    bar(); // bar 的调用位置
+}
+
+function bar() {
+    // 当前调用栈是 baz -> bar
+    // 因此，当前调用位置在 baz
+
+    console.log("bar")
+    foo(); // foo 调用位置
+}
+
+function foo() {
+    // 当前调用栈是 baz -> bar -> foo
+    // 因此，当前调用位置在 bar 中
+    console.log("foo")
+}
+
+baz() // baz 的调用位置
+```
+
+# 绑定规则
+
+### 独立函数调用
+
+```js
+function foo() {
+  console.log(this.a)
+}
+
+var a = 10
+foo() // 10
+```
+
+在本例子中 `this` 默认指向了 `window` 全局对象
+
+为什么呢？
+
+因为，函数调用时不带其他修饰的函数调用，使用默认绑定 `this` 到全局 `window` 对象上。
+
+### 隐式绑定
+
+非严格模式下，函数调用 this 指向调用者。
+
+```js
+function foo() {
+ console.log( this.a );
+}
+var obj = {
+ a: 2,
+ foo: foo
+};
+obj.foo(); // 2
+```
+
+### 隐式丢失
+
+把 this 绑定到全局对象或者 undefined 上，取决于是否是严格模式。
+
+```js
+function foo() {
+ console.log( this.a );
+}
+var obj = {
+ a: 2,
+ foo: foo
+};
+var bar = obj.foo; // 函数别名！
+
+var a = "oops, global"; // a 是全局对象的属性
+bar(); // "oops, global" 调用的位置是在全局对象上的，所以 this 指向了 window
+```
+
+一种更微妙、更常见并且更出乎意料的情况发生在传入回调函数时：
+
+```js
+function foo() {
+ console.log( this.a );
+}
+function doFoo(fn) {
+ // fn 其实引用的是 foo
+ fn(); // <-- 调用位置！
+}
+var obj = {
+ a: 2,
+ foo: foo
+};
+var a = "oops, global"; // a 是全局对象的属性
+doFoo( obj.foo ); // "oops, global" 实际上 this 也是指向 window 的
+```
+
+将函数传入内置函数呢：
+
+```js
+function foo() {
+    console.log( this.a );
+}
+
+var obj = {
+    a:2,
+    foo:foo
+}
+
+var a = "oops, global"; // a 是全局对象上的属性
+setTimeout(obj.foo, 100) // "oops, global" 也是指向了 window
+```
+
+### 显式绑定
+
+使用 call,apply,bind 方式来绑定
+
+```js
+function foo() {
+ console.log( this.a );
+}
+var obj = {
+ a:2
+};
+foo.call( obj ); // 2
+```
+
+上面这种方式就好像下面这样定义，只是换了一种方式
+
+```js
+function foo(){
+  console.log(this.a)
+}
+
+var obj = {
+  a: 2,
+  foo: foo
+}
+
+obj.foo() // 2
+```
+
+如果你传入了一个原始值（字符串类型、布尔类型或者数字类型）来当作 `this` 的绑定对象，
+
+这个原始值会被转换成它的对象形式（也就是 `new String(..)`、`new Boolean(..)` 或者 `new Number(..)）`。这通常被称为“装箱”。
+
+```js
+function foo() {
+ console.log( this.a );
+}
+var obj = {
+ a:2
+};
+foo.call( 2 ); // undefined
+```
+
+
+
