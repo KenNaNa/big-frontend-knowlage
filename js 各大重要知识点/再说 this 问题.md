@@ -316,3 +316,39 @@ function newOP(fn) {
 
 # this词法
 
+箭头函数在创建的过程就绑定了 this 的指向问题，我们可以考虑以下这个问题：
+
+```js
+function foo() {
+ // 返回一个箭头函数
+ return (a) => {
+ //this 继承自 foo()
+ console.log( this.a );
+ };
+}
+var obj1 = {
+ a:2
+}; 
+
+var obj2 = {
+ a:3
+}
+
+var bar = foo.call(obj1)
+bar.call(obj2); // 2 而不是 3
+```
+
+箭头函数最常用于回调函数中，例如事件处理器或者定时器：
+
+```js
+function foo() {
+ setTimeout(() => {
+ // 这里的 this 在词法上继承自 foo()
+ console.log( this.a );
+ },100);
+}
+var obj = {
+ a:2
+};
+foo.call( obj ); // 2
+```
