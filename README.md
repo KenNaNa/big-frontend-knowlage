@@ -50,6 +50,7 @@
 ### react 项目
 
 [react-elm](https://github.com/liuyangjike/react-elm)
+[React-Native学习指南](https://github.com/reactnativecn/react-native-guide)
 
 
 
