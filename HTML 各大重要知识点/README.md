@@ -52,4 +52,46 @@
 
 `width` = `content`
 
+# HTML5是什么？有哪些新特性？新增了哪些语义化标签？新增了哪些表单元素？
+
+### HTML5 是什么？
+
+它是一个新版本的HTML语言，具有新的元素，属性和行为，
+
+它有更大的技术集，允许构建更多样化和更强大的网站和应用程序。这个集合有时称为HTML5和它的朋友们，不过大多数时候仅缩写为一个词 HTML5。
+
+- 语义：能够让你更恰当地描述你的内容是什么。
+- 连通性：能够让你和服务器之间通过创新的新技术方法进行通信。
+- 离线 & 存储：能够让网页在客户端本地存储数据以及更高效地离线运行。
+- 多媒体：使 video 和 audio 成为了在所有 Web 中的一等公民。
+- 2D/3D 绘图 & 效果：提供了一个更加分化范围的呈现选择。
+- 性能 & 集成：提供了非常显著的性能优化和更有效的计算机硬件使用。
+- 设备访问 Device Access：能够处理各种输入和输出设备。
+- 样式设计: 让作者们来创作更加复杂的主题吧！
+
+### 有哪些新特性？
+
+- 语义化标签
+- 多媒体 video/audio
+- 画布 canvas
+- 通信 websocket/webworker/Server-sent events
+- 缓存 localStorage/sessionStorage
+- 拖拽 drag/dragstart/dragover/dragleave/drop
+
+### 新增了哪些语义化标签？
+
+- section 块
+- article 文章
+- nav 导航
+- header 头部
+- footer 页脚
+- main 主要
+- aside 侧边栏
+
+### 新增了哪些表单元素？
+
+[html5篇——新增表单元素和表单属性](https://blog.csdn.net/u010556394/article/details/50769853)
+
+
+
 
