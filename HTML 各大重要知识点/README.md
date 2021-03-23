@@ -40,8 +40,16 @@
 
 ![](https://img-blog.csdn.net/20170917153839823?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzEwNTk0NzU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
+`height` = `border-top` + `border-bottom` + `padding-top` + `padding-bottom` + `content`
+
+`width` = `border-left` + `border-right` + `padding-left` + `padding-right` + `content`
+
 而在W3C标准的盒模型
 
 ![](https://img-blog.csdn.net/20170917153853995?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzEwNTk0NzU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+`height` = `content`
+
+`width` = `content`
 
 
