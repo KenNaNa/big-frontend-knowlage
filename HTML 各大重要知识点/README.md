@@ -92,6 +92,29 @@
 
 [html5篇——新增表单元素和表单属性](https://blog.csdn.net/u010556394/article/details/50769853)
 
+```html
+<form method="get" id="test">
+      <input type="text" name="name"/>
+      <input type="password" name="password"/>
+      <input type="submit" value="提交">
+ </form>
+<input type="text" name="confirm" form="test">
+<input type="email" name="email"/>
+<input type="url" name="url"/>
+<input type="number" name="number" min=2 max=100 step=5 value="15"/>
+<input type="range" name="range" min=20 max=200 value="60"/>
+<input type="date" name="date"/>
+<input type="month" name="month"/>
+<input type="week" name="week"/>
+<input type="time" name="time"/>
+<input type="datetime" name="datetime"/>
+<input type="datetime-local" name="datetime-local"/>
+<input type="search" name="search" result="s"/>
+<input type="tel" name="tel" />
+<input type="color" name="color"/>
+<input type="text" name="name" pattern="[A-z0-9]{8}"/>
+```
+
 
 
 
