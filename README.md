@@ -113,7 +113,8 @@
 # Vue 相关的
 
 - Vue  watch、computed、methods区别是什么
-- v-show与v-if区别是什么列表遍历时key作用？
+- v-show与v-if区别是什么
+- 列表遍历时key作用？
 - Vue有哪些生命周期钩子函数？有什么用？
 - Vue父子组件生命周期调用顺序
 - Vue如何实现组件通信
