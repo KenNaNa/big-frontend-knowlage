@@ -120,8 +120,8 @@
 - Vue如何实现组件通信
 - data为什么是函数
 - Vue数据响应式原理
-- nextTick怎么用？原理是什么组件
-- data为什么是函数
+- nextTick怎么用？原理是什么
+- 组件data为什么是函数
 - diff算法和时间复杂度
 - Vue中的keep-alive有什么用
 - Vuex怎么用
