@@ -131,5 +131,25 @@
 
 - 兼容性差
 
+# meta viewport 是做什么用的，怎么写？
 
+该meta标签的作用是让当前viewport的宽度等于设备的宽度
+
+```html
+<meta name="viewport" content="width=device-width,initial-scale=1">
+```
+
+meta viewport 的6个属性：
+
+- width设置layout viewport的宽度，为一个正整数，或字符串"width-device"
+
+- initial-scale设置页面的最大缩放值，为一个数字，可以带小数
+
+- minimum-scale允许用户的最小缩放值，为一个数字，可以带小数
+
+- maximum-scale允许用户的最大缩放值，为一个数字，可以带小数
+
+- height设置layout viewport的高度，这个属性并不重要，很少使用
+
+- user-scalable 是否允许用户进行缩放，值为"no"或"yes"
 
