@@ -308,6 +308,14 @@ window.onload = function() {
 }
 ```
 
+# 什么属性能让浏览器直接使用ES6 Module
 
+```js
+<script type="module">
+  import {addTextToBody} from './utils.js';
+ 
+  addTextToBody('Modules are pretty cool.');
+</script>
+```
 
 
