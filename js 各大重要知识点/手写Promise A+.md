@@ -87,6 +87,109 @@ JavaScript的发展过程中，异步编程的方式大致有以下几种：
 回调函数的问题在于，当异步操作比较复杂的时候，会出现回调函数层层嵌套的情况，非常混乱，难以管理，被称为“回调地狱”。
 
 
+事件监听在DOM层面应用的比较广泛，各类鼠标事件、键盘事件等都是基于事件监听实现的。
+
+消息通讯与事件监听原理类似，背后都是一个总线在调度(DOM事件存在事件冒泡和事件捕获机制)，在跨模块消息通信场景使用的比较多，大部分前端框架都自带消息通讯的功能。
+
+Promise是JavaScript社区为了解决“回调地狱”问题而提出的一种解决方案，并且在ES6中被确立为正式规范。借助Promise对象我们可以将嵌套的异步操作转换为链式操作，大幅优化了复杂异步操作的代码。
+
+ES6中还新增了一个Generator语法，通过合理封装(比如TJ大神的co库)，可以提供一种用同步写法写异步代码的能力。ES7以后ECMA组织将Generator在异步编程中的应用标准化，确立为Async/Await语法。
+
+Async/Await被JavaScript社区公认为异步编程终极解决方案，在未来将逐渐成为异步编程方案首选。
+
+值得一提的是，Async/Await中仍然会使用到Promise对象，Promise在未来的异步编程领域仍然是非常重要的组成部分，所以深刻理解Promise无论是在当下还是在未来，都是一件极具意义的事情。
+
+可能有人觉得Promise很简单，不外乎promise.then().catch().finally()。在很流行的通讯库axios中，axios.then().catch().finally()也用的很多了，这不就够了吗？
+  
+那么来看几个工作中很可能遇到的问题：
+
+1.	then的resolve/reject方法里返回一个Promise实例，会发生什么？
+
+下列两种写法的结果有什么区别：
+
+2. 	以下代码的输出是怎样的？（流程控制问题）
+
+3.	catch(function(error){})和then(…, function(error){})有什么区别吗？
+
+4.	finally语法的浏览器兼容性比较差(哪怕Chrome也仅在高版本支持)，如何自行实现finally功能？
+
+5.	不同实现的Promise之间可以互相调用吗？比如原生Promise与Axios的协作。
+
+6.	then方法接受两个参数，分别是成功回调函数和失败回调函数，如果不传入函数，会发生什么？
+
+如果没有办法回答上述问题，实在不能大言不惭地宣称自己已经掌握Promise了。要想彻底弄清楚Promise的运作原理，何不亲手实现一个Promise？
+
+Promise本身只是个规范，这几年社区先后提出过Promise/A规范、Promise/B规范、Promise/D规范等等，
+
+当前主流的是Primise/A+规范(https://promisesaplus.com/)，所以本期手撕代码就手把手带大家用ES6实现一个符合Promise/A+规范的Promise对象。
+
+
+# 基础架构
+
+在Promise的构造函数中，定义几个基本变量，其中的_state负责保存Promise状态，状态仅有pending,resolved,rejected3种，且只允许通过_transition转换。
+
+resolve和reject是个简单的状态变换函数，做为参数传递给executor，这样我们就能够用`new MyPromise((resolve, reject) => {})`的方式创建一个Promise实例。
+
+此外，考虑到执行executor的过程中有可能出错，所以我们用try/catch块给包起来，并且
+
+在出错后以catch到的值reject掉这个Promise
+
+
+# 核心代码
+
+在Promise/A+规范中，有那么几个关键点：
+
+1.	只定义了then方法的规范，没有catch，race，all等方法，甚至没有构造函数
+2.	then方法返回一个新的Promise
+3.	不同Promise的实现需要可以相互调用(interoperable)
+
+
+可以看到，整个Promise最核心的是then方法，接下来我们实现一下then。
+
+then方法返回一个新的Promise实例，在这个新的Promise实例内部，我们将onResolved和onRejected包装为一个调度函数，保存到_callbacks数组里，并且调度函数内部用setTimeout实现异步执行。
+
+为什么这里要异步执行？因为Promise的主体方法executor有可能是异步的，我们要确保then方法添加到executor后面去，就必须让then方法延迟执行，利用JavaScript的事件循环机制。
+
+然后有个关键的方法resolveProcedure，这是做什么的呢？
+
+这个方法的任务是以递归的方式不断地尝试执行返回值的then方法，直到返回值不再为thenable对象。
+
+说的通俗一点，就是如果then中onResolved/onRejected方法返回的值具有then方法，那么就继续执行then方法，直到返回一个不可then的值。
+
+这一步有两个意义：一个是如果then返回新的promise，那么会深入执行下去，直到得到最终值；另一个则是允许了不同实现的Promise之间可以互相调用，只要存在then方法，就会被深入执行，不对Promise的类型做判断。
+
+# 异步调度
+
+上一节中提到了then内部是异步执行的，我用setTimeout简单实现了异步执行，但是这是不准确的。
+
+尽管Promise/A+规范没有明确定义，但原生Promise的实现(无论是浏览器还是nodejs中)都把then的异步置于micro-task中，而不是macro-task。
+
+看不懂不要慌，先来科普一下JavaScript的事件循环机制知识。（这里主要讲浏览器
+
+下的事件循环机制，NodeJS中的有差异，这里不展开。）
+
+JavaScript因为是单线程执行的，所以异步任务都会被添加到事件队列中，当JavaScript引擎空闲的时候，就会轮询事件队列，取出其中就绪的任务执行，这就是所谓的事件循环机制(Event Loop)。
+
+不过，事件队列并不是只有一个，浏览器下事件队列有两个，分别称为微任务队列(micro-task)和宏任务队列(macro-task或者叫task)，JavaScript会优先取微任务执行，直到微任务队列为空，再取一个宏任务出来执行，执行完一个宏任务，又会去检查微任务队列。也就是说微任务的优先级是高于宏任务的(微任务可以插宏任务的队)。
+
+
+原生Promise是微任务，而我们用setTimeout实现的Promise变成了宏任务，
+
+这样我们写的Promise是没办法插定时器的队的(比如先添加定时器再添加Promise，应当是先执行Promise后执行定时器)，这在有些场景下会存在问题。
+
+这一节主要就是为了解决这个问题，在NodeJS下，我们可以用process.nextTick实现微任务，在浏览器下，一般用MutaionObserver实现。
+
+MutaionObserver(https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver)是用于监测DOM节点变化的方法，因为它监测到DOM节点变化后的回调函数是微任务，凑巧可以用来包装微任务方法。
+
+我们实现一个nextTick方法，用这个方法替换之前的setTimeout方法即可实现微任务版本的Promise。
+
+如果你还是不明白这么做到底有什么区别，那么可以分别用两种实现的MyPromise去执行下列代码，查看输出结果。
+
+# 功能完善
+
+其实到这里，Promise就已经实现好了，就像前面说的，Promise/A+规范里只定义了then方法，我们常用的catch, all之类都是不在规范内的。
+
+不过一个好用的Promise实现必然需要一系列方法，这些方法其实都是基于then实现的，动手写写这些代码，可以进一步理解then的强大。
 
 
 ```js
