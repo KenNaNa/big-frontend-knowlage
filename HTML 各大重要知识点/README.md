@@ -294,5 +294,20 @@ Uncaught ReferenceError: Vue is not defined
 
 改变某个元素的背景色、文字颜色、边框颜色等等不影响它周围或内部布局的属性时，屏幕的一部分要重画，但是元素的几何尺寸没有变。
 
+# 为什么通常推荐将 `CSS <link>` 放置在 `<head></head>` 之间，而将 `JS <script>` 放置在 `</body>` 之前？你知道有哪些例外吗？
+
+如果将 js 放在 head 里面，则会先被浏览器解析，但是这时的 body 还没被解析，如果这个时候，浏览器解析到 js 出现错误，就会阻止后续的渲染。
+
+例外的话？
+
+一般都会绑定一个监听 onload，当全部的html文档解析完之后，再执行代码
+
+```js
+window.onload = function() {
+      // 将所有 js 代码都在 window.onload 方法加载
+}
+```
+
+
 
 
