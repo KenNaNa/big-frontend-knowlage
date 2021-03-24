@@ -10,7 +10,7 @@
 - 使用 data-* 属性有什么用？
 - <script>、<script async> 和 <script defer> 的区别。
 - 白屏和FOUC是什么？
-- 为什么通常推荐将 CSS <link> 放置在 <head></head> 之间，而将 JS <script> 放置在 </body> 之前？有没有例外的情况？
+- 为什么通常推荐将 CSS `<link>` 放置在 `<head></head>` 之间，而将 JS `<script>` 放置在 `</body>` 之前？有没有例外的情况？
 - 浏览器渲染机制？
 - 什么是回流(reflow)、
 - 重绘(repaint)？
