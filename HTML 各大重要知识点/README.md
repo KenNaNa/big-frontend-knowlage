@@ -153,3 +153,109 @@ meta viewport 的6个属性：
 
 - user-scalable 是否允许用户进行缩放，值为"no"或"yes"
 
+# 使用 data-* 属性有什么用？
+
+是一类被称为自定义数据属性的属性，它赋予我们在所有 HTML 元素上嵌入自定义数据属性的能力，并可以通过脚本在 HTML 与 DOM 表现之间进行专有数据的交换。
+
+通过 element.dataset[属性名字] 获取对应的值。
+
+# `<script>`、`<script async>` 和 `<script defer>` 的区别。
+
+### `<script>`
+
+不带属性，加载到 `script` 脚本立即下载执行，阻塞后续渲染的执行。
+
+### `<script async>`
+
+与后续元素渲染异步执行，乱序执行，若js文件之间存在依赖关系，容易产生错误，
+
+只适用于完全没有依赖的文件，文档解析过程中异步下载，下载完成之后立即执行。
+
+```js
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="../vue.js" async></script>
+  <div id="app"
+       @once>
+  </div>
+  <script>
+            const vm = new Vue({
+                el: "#app",
+                data(){
+                    return {
+                    }
+                },
+            })
+
+            console.log("vm", vm)
+    </script>
+</body>
+
+</html>
+```
+
+你会发现控制台报错了：
+
+```js
+Uncaught ReferenceError: Vue is not defined
+```
+
+### `<script defer>`
+
+与后续渲染异步执行，延迟到界面文档解析完成之后执行，<b style="color: red;">即为立即下载，延迟执行<b>。所有执行均在DOMContentLoaded 事件触发之前完成。 
+
+```js
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="../vue.js" defer></script>
+  <div id="app"
+       @once>
+  </div>
+  <script>
+            const vm = new Vue({
+                el: "#app",
+                data(){
+                    return {
+                    }
+                },
+            })
+
+            console.log("vm", vm)
+    </script>
+</body>
+
+</html>
+```
+
+### 最佳的解决方案
+
+外部引用文件放在`</body>`之前执行
+
+### <script/>放在<head/>与<body/>中的区别？
+
+区别：加载顺序的不同，在页面加载之前下载，HTML加载顺序是由上至下
+
+<head/>：会在文档加载前加载结束。
+
+<body/>：不能保证哪个先加载结束（文档？引用文件？）性能更优
+
+注：内嵌的脚本也不要紧跟在<link>标签之后，否则会导致页面阻塞去等待样式表的下载。
+
