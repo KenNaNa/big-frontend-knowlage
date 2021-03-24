@@ -266,6 +266,12 @@ align-items属性定义项目在交叉轴上如何对齐。
 - baseline: 项目的第一行文字的基线对齐。
 - stretch（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。
 
+# 什么是BFC？看这一篇就够了
+
+[什么是BFC？看这一篇就够了](https://blog.csdn.net/sinat_36422236/article/details/88763187)
+
+
+
 
 
 
