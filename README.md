@@ -24,9 +24,12 @@
 - Flex 怎么用，常用属性有哪些？
 - Grid布局用过吗？
 - 必考：BFC 是什么？
-- CSS 选择器优先级CSS 中 class 和 ID 的区别CSS reset 和 CSS normalize是什么？
-- 浮动 (Floats)元素有哪些特性？清除浮动说一下z-index和叠加上下文是如何形成的？在同一个层叠上下文中才能比较z-index的大小。
-- CSS sprites是什么字体图标和svg图标用过吗你日常工作是如何处理浏览器兼容的？
+- CSS 选择器优先级CSS 中 class 和 ID 的区别
+- CSS reset 和 CSS normalize是什么？
+- 浮动 (Floats)元素有哪些特性？清除浮动说一下
+- z-index和叠加上下文是如何形成的？在同一个层叠上下文中才能比较z-index的大小。
+- CSS sprites是什么字体图标和svg图标用过吗
+- 你日常工作是如何处理浏览器兼容的？
 - 如何为有功能限制的浏览器提供网页？
 - 渐进增强，优雅降级是什么？
 - 有哪些的隐藏内容的方法？
