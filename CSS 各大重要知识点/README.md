@@ -223,6 +223,49 @@ content 清除浮动，并显示在中间。
 
 </html>
 ```
+# Flex布局，常用的几个属性值；
+
+[Flex 布局详解 - Flex布局的常用属性](https://blog.csdn.net/weixin_41305441/article/details/90213419?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.control&dist_request_id=1328689.9934.16165720919716681&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.control)
+
+任何东西都可以Flex布局；
+
+包括行内元素：
+
+```css
+display:inline-flex | flex;
+```
+
+```css
+.box {
+  flex-wrap: nowrap | wrap | wrap-reverse;
+  justify-content: flex-start | flex-end | center | space-between | space-around;
+}
+```
+
+它可能取5个值，具体对齐方式与轴的方向有关。下面假设主轴为从左到右。
+
+- lex-start（默认值）：左对齐
+- flex-end：右对齐
+- center： 居中
+- space-between：两端对齐，项目之间的间隔都相等。
+- space-around：每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍。
+
+align-items属性定义项目在交叉轴上如何对齐。
+
+```css
+.box {
+  align-items: flex-start | flex-end | center | baseline | stretch;
+}
+```
+
+它可能取5个值。具体的对齐方式与交叉轴的方向有关，下面假设交叉轴从上到下。
+
+- flex-start：交叉轴的起点对齐。
+- flex-end：交叉轴的终点对齐。
+- center：交叉轴的中点对齐。
+- baseline: 项目的第一行文字的基线对齐。
+- stretch（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。
+
 
 
 
