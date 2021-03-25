@@ -965,3 +965,43 @@ template {
   display: none;
 }
 ```
+
+# 浮动元素的特质和清除浮动的方法
+
+### 浮动元素的特性
+
+- 脱标，脱离标准文档流
+
+1. div 浮动，脱离文档流
+2. span 浮动，不许要转成块级元素，就能设置宽高了
+
+
+- 贴边，浮动的元素互相靠近
+- 字围，浮动元素有字围效果
+- 收缩，一个浮动元素如果没有设置宽度，那么将自动收缩成文字的宽度
+
+### 清除浮动的方法
+
+- 尾元素清除浮动。给父元素加上clearfix这个类即可
+
+```css
+//在类名为clearfix的元素后面加入内容
+
+.clearfix:after{
+content:"";
+height:0;
+line-height:0;
+display:block;
+clear:both;
+visibility:hidden;
+}
+
+.clearfix{
+ zoom:1;  //因为IE6不支持:after伪类。它的效果和height:1%一样
+}
+
+```
+- 在浮动元素后面加空标签（设clear:both）
+- 给没有设置高度的父元素设置overflow:hidden
+
+一个父亲不能被自己浮动的儿子，撑出高度。但是，只要给父亲加上overflow:hidden; 那么，父亲就能被儿子撑出高了。
