@@ -28,17 +28,21 @@
 - CSS reset 和 CSS normalize是什么？
 - 浮动 (Floats)元素有哪些特性？清除浮动说一下
 - z-index和叠加上下文是如何形成的？在同一个层叠上下文中才能比较z-index的大小。
-- CSS sprites是什么字体图标和svg图标用过吗
+- CSS sprites是什么
+- 字体图标和svg图标用过吗
 - 你日常工作是如何处理浏览器兼容的？
 - 如何为有功能限制的浏览器提供网页？
 - 渐进增强，优雅降级是什么？
 - 有哪些的隐藏内容的方法？
-- 栅格系统是什么你用过媒体查询吗？
+- 栅格系统是什么
+- 你用过媒体查询吗？
 - 如何优化网页的打印样式？
 - 如果设计中使用了非标准的字体，你该如何去实现？
 - 浏览器是如何判断元素是否匹配某个 CSS 选择器？
 - 伪元素 (pseudo-elements) 有什么用？
-- 列出你所知道的 display 属性的全部值inline 和 inline-block 的区别relative、fixed、absolute 和 static 元素的区别？
+- 列出你所知道的 display 属性的全部值
+- inline 和 inline-block 的区别
+- relative、fixed、absolute 和 static 元素的区别？
 - 响应式设计 (responsive design) 和自适应设计 (adaptive design) 不同？
 - 为什么提倡使用 translate() 而非 不是 absolute？
 - 如果实现一个高性能的CSS动画效果？
