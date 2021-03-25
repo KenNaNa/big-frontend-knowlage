@@ -270,8 +270,281 @@ align-items属性定义项目在交叉轴上如何对齐。
 
 [什么是BFC？看这一篇就够了](https://blog.csdn.net/sinat_36422236/article/details/88763187)
 
+块格式化上下文，这么专业的术语，BFC, 哪些方式会创建 BFC 呢？
 
+- 根元素（HTML）
+- 浮动元素（float 不是 none 值）
+- 绝对定位元素（position 值 为 absolute 或者 fixed）
+- 行内块袁术（display: inline-block）
+- 表格单元格（display: table-cell）
+- 表格标题（display: table-caption）
+- 匿名表格单元格元素（display: table, table-row, table-row-group, table-header-group, table-footer-group）
+- overflow 计算值不为 visible 的元素
+- display 值 为 flow-root 的元素
+- contain 值为 layout,content, paint
+- 弹性元素（display: flex|inline-flex）
+- 网格元素（display: grid|inline-grid）
+- 多容器（column-count 或者 column-width）不为 auto
 
+### 产生的影响
 
+1. 浮动定位和清除浮动时只会应用于同一个BFC内的元素。
+2. 浮动不会影响到其他BFC种的元素的布局，
+3. 清除浮动只能清除同一个BFC中在它前面的元素的浮动
+4. 外边距折叠也只会发生在属于同一BFC的块级元素之间
 
+### 利用 BFC 避免 margin 重叠
 
+下面这个例子会发现，两个 p 标签的 margin-top + margin-bottom 应该是 60px, 结果只有 30px 说明重叠了。
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible"
+        content="ie=edge">
+  <title>防止margin重叠</title>
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  p {
+    color: #f55;
+    background: yellow;
+    width: 200px;
+    line-height: 100px;
+    text-align: center;
+    margin: 30px;
+  }
+
+</style>
+
+<body>
+  <p>看看我的 margin是多少</p>
+  <p>看看我的 margin是多少</p>
+</body>
+
+</html>
+
+```
+
+根据第 4 条，我们知道可以使用不同的 BFC 来避免 margin 的重叠
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>防止margin重叠</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    p {
+        color: #f55;
+        background: yellow;
+        width: 200px;
+        line-height: 100px;
+        text-align:center;
+        margin: 30px;
+    }
+    div{
+        overflow: hidden;
+    }
+</style>
+<body>
+    <p>看看我的 margin是多少</p>
+    <div>
+        <p>看看我的 margin是多少</p>
+    </div>
+</body>
+</html>
+
+```
+
+### 自适应两栏布局
+
+每个盒子的 margin box 的左边，与包含块 border box 的左边相接触（对于从左往右的格式化，否则相反）即使存在浮动也是如此。
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        width: 100%;
+        position: relative;
+    }
+ 
+    .left {
+        width: 100px;
+        height: 150px;
+        float: left;
+        background: rgb(139, 214, 78);
+        text-align: center;
+        line-height: 150px;
+        font-size: 20px;
+    }
+ 
+    .right {
+        height: 300px;
+        background: rgb(170, 54, 236);
+        text-align: center;
+        line-height: 300px;
+        font-size: 40px;
+    }
+</style>
+<body>
+    <div class="left">LEFT</div>
+    <div class="right">RIGHT</div>
+</body>
+</html>
+
+```
+又因为：BFC 的区域不会与 float box 重叠
+
+所以我们让 right 单独成为一个 BFC
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        width: 100%;
+        position: relative;
+    }
+ 
+    .left {
+        width: 100px;
+        height: 150px;
+        float: left;
+        background: rgb(139, 214, 78);
+        text-align: center;
+        line-height: 150px;
+        font-size: 20px;
+    }
+ 
+    .right {
+        overflow: hidden;
+        height: 300px;
+        background: rgb(170, 54, 236);
+        text-align: center;
+        line-height: 300px;
+        font-size: 40px;
+    }
+</style>
+<body>
+    <div class="left">LEFT</div>
+    <div class="right">RIGHT</div>
+</body>
+</html>
+
+```
+### 清除浮动
+
+当我们不给父节点设置高度，子节点设置浮动的时候，会发生高度塌陷，这个时候我们就要清除浮动。
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible"
+        content="ie=edge">
+  <title>清除浮动</title>
+</head>
+<style>
+  .par {
+    border: 5px solid rgb(91, 243, 30);
+    width: 300px;
+  }
+
+  .child {
+    border: 5px solid rgb(233, 250, 84);
+    width: 100px;
+    height: 100px;
+    float: left;
+  }
+
+</style>
+
+<body>
+  <div class="par">
+    <div class="child"></div>
+    <div class="child"></div>
+  </div>
+</body>
+
+</html>
+```
+这个时候我们根据最后一条：
+
+计算 BFC 的高度时，浮动元素也参与计算
+
+给父节点激活 BFC
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>清除浮动</title>
+</head>
+<style>
+    .par {
+        border: 5px solid rgb(91, 243, 30);
+        width: 300px;
+        overflow: hidden;
+    }
+    
+    .child {
+        border: 5px solid rgb(233, 250, 84);
+        width:100px;
+        height: 100px;
+        float: left;
+    }
+</style>
+<body>
+    <div class="par">
+        <div class="child"></div>
+        <div class="child"></div>
+    </div>
+</body>
+</html>
+
+```
