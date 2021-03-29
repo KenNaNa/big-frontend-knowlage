@@ -63,7 +63,9 @@ function ajax({url, type, data, dataType}) {
         }
         
         resolve(res)
-      } 
+      } else {
+        reject(xhr.responseText)
+      }
     }
     
     // 如果请求方式为 get
