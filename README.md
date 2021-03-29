@@ -83,8 +83,8 @@
 - 实现bind、call、apply
 - 数组拍平
 - 手写发布订阅
-- 手写Promise斐
-- 波那契实现与优化
+- 手写Promise
+- 斐波那契实现与优化
 
 # HTTP
 
