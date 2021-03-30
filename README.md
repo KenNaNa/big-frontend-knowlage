@@ -10,6 +10,8 @@
 
 [lgg33/shop_manage](https://github.com/lgg33/shop_manage)
 
+[坚持写技术博客一年能有多少收获！](https://segmentfault.com/a/1190000037406055)
+
 # HTML相关
 
 - DTD的作用是什么？
