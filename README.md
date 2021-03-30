@@ -6,6 +6,8 @@
 
 [前端面试 前端知识点 面试题大全 vue react node git element 支付 微信公众平台 每日持续更新](https://github.com/qdleader/qdleader)
 
+[《Node.js区块链开发》，注：新版代码已开源！请star支持哦-^-：](https://github.com/imfly/bitcoin-on-nodejs)
+
 # HTML相关
 
 - DTD的作用是什么？
