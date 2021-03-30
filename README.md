@@ -12,6 +12,8 @@
 
 [坚持写技术博客一年能有多少收获！](https://segmentfault.com/a/1190000037406055)
 
+[自己做了一个IT技术类的公众号，我应该怎么吸引更多的人关注呢？](https://www.zhihu.com/question/310960915)
+
 # HTML相关
 
 - DTD的作用是什么？
