@@ -14,6 +14,10 @@
 
 [自己做了一个IT技术类的公众号，我应该怎么吸引更多的人关注呢？](https://www.zhihu.com/question/310960915)
 
+[js 代码段](https://github.com/maomaoshu/jsBook)
+
+[打造自己的JavaScript代码库，片段，函数，以备将来之用，代码持续添加中](https://github.com/Roger1492/JS-function-libiary)
+
 # HTML相关
 
 - DTD的作用是什么？
