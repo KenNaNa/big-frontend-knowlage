@@ -8,6 +8,8 @@
 
 [《Node.js区块链开发》，注：新版代码已开源！请star支持哦-^-：](https://github.com/imfly/bitcoin-on-nodejs)
 
+[lgg33/shop_manage](https://github.com/lgg33/shop_manage)
+
 # HTML相关
 
 - DTD的作用是什么？
