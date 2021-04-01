@@ -355,19 +355,35 @@ export default {
   <div class="swipe-content">
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white" lazy-render>
       <van-swipe-item v-for="item in bannerData" :key="item.id">
-        <img :src="item.images" class="img" :alt="item.title" />
+        <img :src="item.images" class="img" :alt="item.title" @click="toDetail(item)" />
       </van-swipe-item>
     </van-swipe>
   </div>
 </template>
 <script>
-import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
 export default {
   name: "Banner",
   props: {
     bannerData: {
       type: Array
     }
+  },
+  setup(props) {
+    const router = useRouter();
+    const toDetail = item => {
+      router.push({
+        name: "Detail",
+        params: {
+          id: item.id,
+          item: JSON.stringify(item)
+        }
+      });
+    };
+
+    return {
+      toDetail
+    };
   }
 };
 </script>
@@ -405,6 +421,26 @@ const routes: Array<RouteRecordRaw> = [
             requireAuth: true
         },
         component: () => import("../views/Home/index.vue")
+    },
+    {
+        path: '/select',
+        name: 'Select',
+        meta: {
+            title: "选项",
+            keepAlive: true,
+            requireAuth: true
+        },
+        component: () => import("../views/Select/index.vue")
+    },
+    {
+        path: '/detail/:id/:item',
+        name: 'Detail',
+        meta: {
+            title: "选项",
+            keepAlive: true,
+            requireAuth: true
+        },
+        component: () => import("../views/Detail/index.vue")
     },
     {
         path: '/login',
@@ -487,6 +523,132 @@ setRem()
 window.onresize = function () {
     setRem()
 }
+```
+
+# src/views/Detail/index.vue
+
+```js
+<template>
+  <div class="detail-wrap">
+    <p class="title">{{item.title}}</p>
+    <div class="img" v-for="(img, index) in item.imgs" :key="index">
+      <img :src="img" class="img" />
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { useRoute } from "vue-router";
+import { reactive, toRefs, computed } from "vue";
+export default {
+  name: "Detail",
+  setup(props) {
+    interface Data {
+      id?: string | Array<string>;
+      item?: Object;
+    }
+    let data: Data = {
+      id: "",
+      item: Object
+    };
+    const state = reactive(data);
+
+    const route = useRoute();
+    const item = computed(() => route.params.item).value;
+    state.id = computed(() => route.params.id).value;
+    state.item = JSON.parse(item);
+
+    return {
+      ...toRefs(state)
+    };
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.detail-wrap {
+  width: 100%;
+  .title {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: #cccc;
+    font-size: 20px;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    background-color: #2c323c;
+  }
+  .img {
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>
+
+```
+
+# src/views/Select/index.vue
+
+```js
+<template>
+  <div class="select-wrap">
+    <van-radio-group
+      v-model="state.checked"
+      direction="horizontal"
+      :icon-size="30"
+      @change="change"
+    >
+      <van-radio name="1">男</van-radio>
+      <van-radio name="2">女</van-radio>
+    </van-radio-group>
+  </div>
+</template>
+
+<script lang="ts" setup="props">
+import { ref, getCurrentInstance } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
+const state = ref({
+  checked: ""
+});
+const { ctx } = getCurrentInstance();
+
+const change = (e: string) => {
+  const num = parseInt(e);
+  switch (num) {
+    case 1:
+      console.log("男");
+      ctx.$toast({
+        type: "text",
+        message: "暂无帅哥"
+      });
+      break;
+    case 2:
+      console.log("女");
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
+      break;
+    default:
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.select-wrap {
+  width: 100%;
+  height: 100%;
+  background-color: #ebfff0;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  ::v-deep .van-radio__label {
+    font-size: 30px;
+  }
+}
+</style>
 ```
 
 # src/views/Home/index.vue
@@ -638,7 +800,7 @@ const login = async () => {
         // 设置 token
         window.localStorage.setItem("accessToken", res.data.token);
         console.log("res===>", res);
-        router.push("/");
+        router.push("/select");
       },
       error => {
         initError();
@@ -694,6 +856,8 @@ const login = async () => {
 }
 </style>
 ```
+
+# 
 
 # src/App.vue
 
