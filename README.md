@@ -6,6 +6,22 @@
 
 ![](https://pic3.zhimg.com/v2-a3776f6dabdf82b28e36a8ec38b2ce33_b.jpg)
 
+最近小编在公司没事琢磨出来一个小黄站的想法，打算一整套网站
+
+# 小黄站规划路线
+1. 搜索美女图片功能
+2. 确认用户是否是选择男还是女的
+3. 图片预览功能
+4. 详情
+5. 用户点赞，评论，收藏 
+6. 可以订阅别人的相册
+7. 可以创建相册
+8. 首页，用户中心，创建相册
+
+[用Vue3+Ts+Vite2写一个小黄站](https://github.com/KenNaNa/big-frontend-knowlage/blob/master/Vue%20%E5%AD%A6%E4%B9%A0/vue3%2Bts%2Bvite2%E5%B0%8F%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98.md)
+
+[用 taro+ts+vue3 写一个小黄站](https://github.com/KenNaNa/big-frontend-knowlage/blob/master/Vue%20%E5%AD%A6%E4%B9%A0/taro-vue3-ts%E5%B0%8F%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98.md)
+
 [taro 文档](https://nervjs.github.io/taro/docs/GETTING-STARTED/)
 
 
