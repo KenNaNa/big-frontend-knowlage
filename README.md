@@ -20,6 +20,8 @@
 
 [《Koa2进阶学习笔记》已完结](https://chenshenhai.github.io/koa2-note/)
 
+[Koa.js 设计模式-学习笔记](https://chenshenhai.github.io/koajs-design-note/)
+
 [七天学会 node](https://nqdeng.github.io/7-days-nodejs/)
 
 [Deno 资源全图谱 · 专注中文版 ](https://github.com/hylerrix/awesome-deno-cn)
