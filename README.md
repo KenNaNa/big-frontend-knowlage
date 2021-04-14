@@ -18,6 +18,8 @@
 7. 可以创建相册
 8. 首页，用户中心，创建相册
 
+[Deno 资源全图谱 · 专注中文版 ](https://github.com/hylerrix/awesome-deno-cn)
+
 [用Vue3+Ts+Vite2写一个小黄站](https://github.com/KenNaNa/big-frontend-knowlage/blob/master/Vue%20%E5%AD%A6%E4%B9%A0/vue3%2Bts%2Bvite2%E5%B0%8F%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98.md)
 
 [用 taro+ts+vue3 写一个小黄站](https://github.com/KenNaNa/big-frontend-knowlage/blob/master/Vue%20%E5%AD%A6%E4%B9%A0/taro-vue3-ts%E5%B0%8F%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98.md)
