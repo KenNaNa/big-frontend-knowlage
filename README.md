@@ -18,6 +18,10 @@
 7. 可以创建相册
 8. 首页，用户中心，创建相册
 
+[《Koa2进阶学习笔记》已完结](https://chenshenhai.github.io/koa2-note/)
+
+[七天学会 node](https://nqdeng.github.io/7-days-nodejs/)
+
 [Deno 资源全图谱 · 专注中文版 ](https://github.com/hylerrix/awesome-deno-cn)
 
 [用Vue3+Ts+Vite2写一个小黄站](https://github.com/KenNaNa/big-frontend-knowlage/blob/master/Vue%20%E5%AD%A6%E4%B9%A0/vue3%2Bts%2Bvite2%E5%B0%8F%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98.md)
