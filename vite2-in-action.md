@@ -637,4 +637,263 @@ app.use(router).use(element3).mount('#app');
 </template>
 ```
 
+# sixth commit
+
+安装 vuex
+
+```js
+yarn add vuex@4.x --save
+```
+
+修改 components/HelloWorld.vue
+
+```html
+<template>
+  <h1>{{ msg }}</h1>
+  <p>{{ $store.state.counter }}</p>
+  <el-button @click="state.count++">count is: {{ state.count }}</el-button>
+</template>
+
+<script setup>
+import { defineProps, reactive } from "vue";
+
+defineProps({
+  msg: String,
+});
+
+const state = reactive({ count: 0 });
+</script>
+
+<style scoped>
+a {
+  color: #42b983;
+}
+</style>
+```
+
+在 layout 新建 components/AppMain.vue
+
+```html
+<template>
+  <section class="app-main">
+    <router-view v-slot="{ Component }">
+      <transition name="fade-transform" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
+  </section>
+</template>
+
+<script>
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "AppMain",
+});
+</script>
+
+<style lang="scss" scoped>
+.app-main {
+  /*50 = navbar  */
+  min-height: calc(100vh - 50px);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+</style>
+
+```
+
+在 layout 新建 components/NavBar.vue
+
+```html
+<template>
+  <div class="navbar">
+    <div class="right-menu">
+      <el-dropdown class="avatar-container" trigger="click">
+        <div class="avatar-wrapper">
+          <img src="/src/assets/logo.png" class="user-avatar" />
+          <i class="el-icon-caret-bottom" />
+        </div>
+        <el-dropdown-menu class="user-dropdown">
+          <router-link to="/">
+            <el-dropdown-item> 首页 </el-dropdown-item>
+          </router-link>
+          <a target="_blank" href="https://github.com/57code/vite2-in-action/">
+            <el-dropdown-item>我的Github</el-dropdown-item>
+          </a>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.navbar {
+  height: 50px;
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  .right-menu {
+    float: right;
+    height: 100%;
+    line-height: 50px;
+    &:focus {
+      outline: none;
+    }
+    .right-menu-item {
+      display: inline-block;
+      padding: 0 8px;
+      height: 100%;
+      font-size: 18px;
+      color: #5a5e66;
+      vertical-align: text-bottom;
+      &.hover-effect {
+        cursor: pointer;
+        transition: background 0.3s;
+        &:hover {
+          background: rgba(0, 0, 0, 0.025);
+        }
+      }
+    }
+    .avatar-container {
+      margin-right: 30px;
+      .avatar-wrapper {
+        margin-top: 5px;
+        position: relative;
+        .user-avatar {
+          cursor: pointer;
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
+        }
+        .el-icon-caret-bottom {
+          cursor: pointer;
+          position: absolute;
+          right: -20px;
+          top: 25px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+</style>
+```
+
+在 layout 目录下新建 index.vue
+
+```html
+<template>
+  <div class="app-wrapper">
+    <!-- 侧边栏 -->
+    <div class="sidebar-container"></div>
+    <!-- 内容容器 -->
+    <div class="main-container">
+      <!-- 顶部导航栏 -->
+      <nav-bar />
+      <!-- 内容区 -->
+      <app-main />
+    </div>
+  </div>
+</template>
+
+<script setup>
+import AppMain from "layout/components/AppMain.vue";
+import NavBar from "layout/components/NavBar.vue";
+</script>
+
+<style lang="scss" scoped>
+@import "styles/mixin.scss";
+.app-wrapper {
+  @include clearfix;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+</style>
+```
+
+在 src 新建 store/index.js
+
+```js
+import { createStore } from 'vuex';
+const store = createStore({
+    state: {
+        counter: 0
+    }
+});
+
+export default store;
+```
+
+修改 plugin/element3.js
+
+```js
+// 完整引入
+import element3 from "element3";
+import "element3/lib/theme-chalk/index.css";
+
+export default function (app) {
+    // 完整引入
+    app.use(element3);
+};
+```
+
+修改 src/router/index.js
+
+```js
+import { createRouter, createWebHashHistory } from 'vue-router';
+import Layout from 'layout/index.vue';
+const router = createRouter({
+    history: createWebHashHistory(),
+    routes: [
+        {
+            path: '/',
+            name: 'layout',
+            component: Layout,
+            children: [
+                {
+                    path: '',
+                    name: 'home',
+                    component: () => import('views/home/index.vue'),
+                    meta: {
+                        title: "首页",
+                        icon: 'el-icon-s-home'
+                    }
+                }
+            ]
+        }
+    ]
+});
+
+export default router;
+```
+
+在 main.js
+
+```js
+import { createApp } from 'vue';
+import App from './App.vue';
+
+// 引入全局样式
+import "styles/index.scss";
+
+// 导入 element3
+import element3 from 'plugins/element3.js';
+
+// 导入路由
+import router from "router/index.js";
+
+// 导入仓库
+import store from 'store/index.js';
+
+const app = createApp(App);
+app.use(router).use(store).use(element3).mount('#app');
+```
+
+
+
+
 
