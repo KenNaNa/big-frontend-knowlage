@@ -893,6 +893,30 @@ const app = createApp(App);
 app.use(router).use(store).use(element3).mount('#app');
 ```
 
+# seventh commit 
+
+安装 path
+
+```js
+yarn add path --save
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
