@@ -141,6 +141,12 @@ a {
 
 # third commit
 
+安装 sass 插件，解析 scss 样式
+
+```js
+yarn add sass --save-dev
+```
+
 在 src 新建 styles 目录，样式配置
 
 #### mixin.scss
@@ -251,9 +257,185 @@ div:focus {
 import "styles/index.scss";
 ```
 
+# fourth commit 
 
+安装 element3
 
+```js
+yarn add element3 --save
+```
 
+在 src 下新建 plugins/element3.js
+
+```js
+// 完整引入
+// import element3 from "element3";
+// import "element3/lib/theme-chalk/index.css";
+
+// 按需引入
+import "element3/lib/theme-chalk/button.css";
+import {
+    // ElRow,
+    // ElCol,
+    // ElContainer,
+    // ElHeader,
+    // ElFooter,
+    // ElAside,
+    // ElMain,
+    // ElIcon,
+    ElButton,
+    // ElLink,
+    // ElRadio,
+    // ElRadioButton,
+    // ElRadioGroup,
+    // ElCheckbox,
+    // ElCheckboxButton,
+    // ElCheckboxGroup,
+    // ElInput,
+    // ElInputNumber,
+    // ElSelect,
+    // ElOption,
+    // ElOptionGroup,
+    // ElCascader,
+    // ElCascaderPanel,
+    // ElSwitch,
+    // ElSlider,
+    // ElTimePicker,
+    // ElTimeSelect,
+    // ElDatePicker,
+    // ElUpload,
+    // ElRate,
+    // ElColorPicker,
+    // ElTransfer,
+    // ElForm,
+    // ElFormItem,
+    // ElTag,
+    // ElProgress,
+    // ElTree,
+    // ElPagination,
+    // ElBadge,
+    // ElAvatar,
+    // ElAlert,
+    // ElLoading,
+    // ElMenu,
+    // ElMenuItem,
+    // ElSubmenu,
+    // ElMenuItemGroup,
+    // ElTabs,
+    // ElTabPane,
+    // ElBreadcrumb,
+    // ElBreadcrumbItem,
+    // ElPageHeader,
+    // ElDropdown,
+    // ElDropdownItem,
+    // ElDropdownMenu,
+    // ElSteps,
+    // ElStep,
+    // ElDialog,
+    // ElTooltip,
+    // ElPopover,
+    // ElPopconfirm,
+    // ElCard,
+    // ElCarousel,
+    // ElCarouselItem,
+    // ElCollapse,
+    // ElCollapseItem,
+    // ElTimeline,
+    // ElTimelineItem,
+    // ElDivider,
+    // ElCalendar,
+    // ElImage,
+    // ElBacktop,
+    // ElInfiniteScroll,
+    // ElDrawer,
+    // ElScrollbar,
+} from "element3";
+
+export default function useElement(app) {
+    // 完整引入
+    // app.use(element3)
+
+    // 按需引入
+    app.use(ElButton);
+}
+```
+
+配置 plugins 目录
+
+```js
+// vite.config.js
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
+import path from 'path';
+import { viteMockServe } from 'vite-plugin-mock';
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [
+    vue(),
+    vueJsx(),
+    viteMockServe({ supportTs: false })
+  ],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+      "comps": path.resolve(__dirname, "src/components"),
+      "api": path.resolve(__dirname, "src/api"),
+      "views": path.resolve(__dirname, "src/views"),
+      "styles": path.resolve(__dirname, "src/styles"),
+      "locales": path.resolve(__dirname, "src/locales"),
+      "layout": path.resolve(__dirname, "src/layout"),
+      "utils": path.resolve(__dirname, "src/utils"),
+      "dirs": path.resolve(__dirname, "src/dirs"),
+      "plugins": path.resolve(__dirname, "src/plugins")
+    }
+  }
+});
+```
+
+在 main.js 引入组件
+
+```js
+import { createApp } from 'vue';
+import App from './App.vue';
+
+// 引入全局样式
+import "styles/index.scss";
+
+// 导入 element3
+import useElement from 'plugins/element3.js';
+
+const app = createApp(App);
+useElement(app);
+app.mount('#app');
+```
+
+修改 HelloWorld.vue 组件
+
+```html
+<template>
+  <h1>{{ msg }}</h1>
+  <el-button @click="state.count++">count is: {{ state.count }}</el-button>
+</template>
+
+<script setup>
+import { defineProps, reactive } from "vue";
+
+defineProps({
+  msg: String,
+});
+
+const state = reactive({ count: 0 });
+</script>
+
+<style scoped>
+a {
+  color: #42b983;
+}
+</style>
+
+```
 
 
 
