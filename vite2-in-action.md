@@ -434,12 +434,207 @@ a {
   color: #42b983;
 }
 </style>
-
 ```
 
+# five commit 
 
+安装 vue-router
 
+```js
+yarn add vue-router@4.x --save
+```
 
+在 src 下新建 router 目录
 
+在 src 下新建 views 目录
+
+配置 vite.config.js
+
+```js
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
+import { viteMockServe } from 'vite-plugin-mock';
+import path from 'path';
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [
+    vue(),
+    vueJsx(),
+    viteMockServe({ supportTs: false })
+  ],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+      "comps": path.resolve(__dirname, "src/components"),
+      "api": path.resolve(__dirname, "src/api"),
+      "views": path.resolve(__dirname, "src/views"),
+      "styles": path.resolve(__dirname, "src/styles"),
+      "locales": path.resolve(__dirname, "src/locales"),
+      "layout": path.resolve(__dirname, "src/layout"),
+      "utils": path.resolve(__dirname, "src/utils"),
+      "dirs": path.resolve(__dirname, "src/dirs"),
+      "plugins": path.resolve(__dirname, "src/plugins"),
+      "config": path.resolve(__dirname, "src/config"),
+      "router": path.resolve(__dirname, "src/router"),
+      "store": path.resolve(__dirname, "src/store")
+    }
+  }
+});
+
+```
+在 router 下新建 index.js
+
+```js
+import { createRouter, createWebHashHistory } from 'vue-router';
+
+const router = createRouter({
+    history: createWebHashHistory(),
+    routes: [
+        {
+            path: '/',
+            name: 'home',
+            component: () => import('views/home/index.vue')
+        }
+    ]
+});
+
+export default router;
+```
+
+在 views 目录下新建 home/index.vue
+
+```html
+<template>
+  <div>
+    <HelloWorld></HelloWorld>
+  </div>
+</template>
+
+<script setup>
+import HelloWorld from "@/components/HelloWorld.vue";
+</script>
+
+<style scoped>
+</style>
+```
+
+修改 plugins/element3.js
+```js
+// 完整引入
+// import element3 from "element3";
+// import "element3/lib/theme-chalk/index.css";
+
+// 按需引入
+import "element3/lib/theme-chalk/button.css";
+import {
+    // ElRow,
+    // ElCol,
+    // ElContainer,
+    // ElHeader,
+    // ElFooter,
+    // ElAside,
+    // ElMain,
+    // ElIcon,
+    ElButton,
+    // ElLink,
+    // ElRadio,
+    // ElRadioButton,
+    // ElRadioGroup,
+    // ElCheckbox,
+    // ElCheckboxButton,
+    // ElCheckboxGroup,
+    // ElInput,
+    // ElInputNumber,
+    // ElSelect,
+    // ElOption,
+    // ElOptionGroup,
+    // ElCascader,
+    // ElCascaderPanel,
+    // ElSwitch,
+    // ElSlider,
+    // ElTimePicker,
+    // ElTimeSelect,
+    // ElDatePicker,
+    // ElUpload,
+    // ElRate,
+    // ElColorPicker,
+    // ElTransfer,
+    // ElForm,
+    // ElFormItem,
+    // ElTag,
+    // ElProgress,
+    // ElTree,
+    // ElPagination,
+    // ElBadge,
+    // ElAvatar,
+    // ElAlert,
+    // ElLoading,
+    // ElMenu,
+    // ElMenuItem,
+    // ElSubmenu,
+    // ElMenuItemGroup,
+    // ElTabs,
+    // ElTabPane,
+    // ElBreadcrumb,
+    // ElBreadcrumbItem,
+    // ElPageHeader,
+    // ElDropdown,
+    // ElDropdownItem,
+    // ElDropdownMenu,
+    // ElSteps,
+    // ElStep,
+    // ElDialog,
+    // ElTooltip,
+    // ElPopover,
+    // ElPopconfirm,
+    // ElCard,
+    // ElCarousel,
+    // ElCarouselItem,
+    // ElCollapse,
+    // ElCollapseItem,
+    // ElTimeline,
+    // ElTimelineItem,
+    // ElDivider,
+    // ElCalendar,
+    // ElImage,
+    // ElBacktop,
+    // ElInfiniteScroll,
+    // ElDrawer,
+    // ElScrollbar,
+} from "element3";
+
+export default function (app) {
+    // 完整引入
+    // app.use(element3)
+
+    // 按需引入
+    app.use(ElButton);
+};
+```
+导入 main.js 
+```js
+import { createApp } from 'vue';
+import App from './App.vue';
+
+// 引入全局样式
+import "styles/index.scss";
+
+// 导入 element3
+import element3 from 'plugins/element3.js';
+
+// 导入路由
+import router from "router/index.js";
+
+const app = createApp(App);
+app.use(router).use(element3).mount('#app');
+```
+修改 App.vue
+
+```html
+<template>
+  <router-view></router-view>
+</template>
+```
 
 
