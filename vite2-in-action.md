@@ -2013,14 +2013,649 @@ a {
   color: #42b983;
 }
 </style>
-
 ```
 
+# 数据管理
 
+mock/test.js
 
+```js
+const mockList = [
+  { id: 1, name: "tom", age: 18 },
+  { id: 2, name: "jerry", age: 18 },
+  { id: 3, name: "mike", age: 18 },
+  { id: 4, name: "jack", age: 18 },
+  { id: 5, name: "larry", age: 18 },
+  { id: 6, name: "white", age: 18 },
+  { id: 7, name: "peter", age: 18 },
+  { id: 8, name: "james", age: 18 },
+];
 
+module.exports = [
+  {
+    url: "/api/getUser",
+    type: "get",
+    response: () => {
+      return {
+        code: 20000,
+        data: { id: 1, name: "tom", age: 18 },
+      };
+    },
+  },
+  {
+    url: "/api/getUsers",
+    type: "get",
+    response: (config) => {
+      // 从查询参数中获取分页、过滤关键词等参数
+      const { page = 1, limit = 5 } = config.query;
 
+      // 分页
+      const data = mockList.filter(
+        (item, index) => index < limit * page && index >= limit * (page - 1)
+      );
 
+      return {
+        code: 20000,
+        data,
+        total: mockList.length,
+      };
+    },
+  },
+  {
+    url: "/api/addUser",
+    type: "post",
+    response: () => {
+      // 直接返回
+      return {
+        code: 20000,
+      };
+    },
+  },
+  {
+    url: "/api/updateUser",
+    type: "post",
+    response: () => {
+      return {
+        code: 20000,
+      };
+    },
+  },
+  {
+    url: "/api/deleteUser",
+    type: "get",
+    response: () => {
+      return {
+        code: 20000,
+      };
+    },
+  },
+];
+```
+
+src/components/HelloWorld.vue
+
+```html
+<template>
+  <h1>{{ msg }}</h1>
+  <p>{{ $store.state.counter }}</p>
+  <el-button @click="state.count++">count is: {{ state.count }}</el-button>
+</template>
+
+<script setup>
+import { defineProps, reactive } from "vue";
+defineProps({
+  msg: String,
+});
+const state = reactive({ count: 0 });
+</script>
+
+<style scoped>
+a {
+  color: #42b983;
+}
+</style>
+```
+src/router/index.js
+
+```js
+import { createRouter, createWebHashHistory } from "vue-router";
+import Layout from "layout/index.vue";
+
+/**
+ * Note: 子菜单仅当路由的children.length >= 1时才出现
+ *
+ * hidden: true                   设置为true时路由将显示在sidebar中(默认false)
+ * alwaysShow: true               如果设置为true则总是显示在菜单根目录
+ *                                如果不设置alwaysShow, 当路由有超过一个子路由时,
+ *                                将会变为嵌套模式, 否则不会显示根菜单
+ * redirect: noRedirect           如果设置noRedirect时，breadcrumb中点击将不会跳转
+ * name:'router-name'             name用于<keep-alive> (必须设置!!!)
+ * meta : {
+    roles: ['admin','editor']    页面可访问角色设置 
+    title: 'title'               sidebar和breadcrumb显示的标题 
+    icon: 'svg-name'/'el-icon-x' sidebar中显示的图标
+    breadcrumb: false            设置为false，将不会出现在面包屑中
+    activeMenu: '/example/list'  如果设置一个path, sidebar将会在高亮匹配项
+  }
+ */
+export const routes = [
+    {
+        path: "/",
+        redirect: "/home",
+        component: Layout,
+        meta: { title: "导航", icon: "el-icon-s-home" },
+        children: [
+            {
+                path: "home",
+                component: () => import("views/home/index.vue"),
+                name: "Home",
+                meta: { title: "首页", icon: "el-icon-s-home" },
+                children: [
+                    {
+                        path: ":id",
+                        component: () => import("views/detail/index.vue"),
+                        name: "Detail",
+                        hidden: true,
+                        meta: {
+                            title: "详情",
+                            icon: "el-icon-s-home",
+                            activeMenu: "/home",
+                        },
+                    },
+                ],
+            },
+        ],
+    },
+
+    {
+        path: "/users",
+        component: Layout,
+        meta: {
+            title: "用户管理",
+            icon: "el-icon-user-solid",
+        },
+        redirect: '/users/list',
+        children: [
+            {
+                path: "list",
+                component: () => import("views/users/list.vue"),
+                meta: {
+                    title: "用户列表",
+                    icon: "el-icon-document",
+                },
+            },
+            {
+                path: "create",
+                component: () => import("views/users/create.vue"),
+                hidden: true,
+                meta: {
+                    title: "创建新用户",
+                    activeMenu: "/users/list",
+                },
+            },
+            {
+                path: "edit/:id(\\d+)",
+                name: "userEdit",
+                component: () => import("views/users/edit.vue"),
+                hidden: true,
+                meta: {
+                    title: "编辑用户信息",
+                    activeMenu: "/users/list",
+                },
+            },
+        ],
+    },
+];
+
+const router = createRouter({
+    history: createWebHashHistory(),
+    routes,
+});
+
+export default router;
+```
+src/components/Detail.vue
+
+```html
+<template>
+  <div class="container">
+    <el-form ref="form" :model="model" :rules="rules">
+      <el-form-item prop="name" label="用户名">
+        <el-input v-model="model.name"></el-input>
+      </el-form-item>
+      <el-form-item prop="age" label="用户年龄">
+        <el-input v-model.number="model.age"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button @click="submitForm" type="primary">提交</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+</template>
+
+<script>
+import { Message } from "element3";
+import { reactive, ref } from "vue";
+import { useRoute } from "vue-router";
+import { useItem } from "../model/userModel";
+export default {
+  props: {
+    isEdit: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup(props) {
+    // 路由
+    const route = useRoute();
+    const { model, addUser, updateUser } = useItem(
+      props.isEdit,
+      route.params.id
+    );
+    const rules = reactive({
+      // 校验规则
+      name: [{ required: true, message: "用户名为必填项" }],
+    });
+    // 表单实例
+    const form = ref(null);
+    // 提交表单
+    function submitForm() {
+      // 校验
+      form.value.validate((valid) => {
+        if (valid) {
+          // 提交
+          if (props.isEdit) {
+            updateUser().then(() => {
+              // 操作成功提示信息
+              Message.success({
+                title: "操作成功",
+                message: "更新用户数据成功",
+                duration: 2000,
+              });
+            });
+          } else {
+            addUser().then(() => {
+              // 操作成功提示信息
+              Message.success({
+                title: "操作成功",
+                message: "新增玩家数据成功",
+                duration: 2000,
+              });
+            });
+          }
+        }
+      });
+    }
+    return {
+      model,
+      rules,
+      form,
+      submitForm,
+    };
+  },
+};
+</script>
+
+<style scoped>
+.container {
+  padding: 10px;
+}
+</style>
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>
+```
+
+src/components/Pagination.vue
+
+```html
+<template>
+  <div :class="{ hidden: hidden }" class="pagination-container">
+    <el-pagination
+      :background="background"
+      v-model:current-page="currentPage"
+      v-model:page-size="pageSize"
+      :layout="layout"
+      :page-sizes="pageSizes"
+      :total="total"
+      v-bind="$attrs"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Pagination",
+  props: {
+    total: {
+      required: true,
+      type: Number,
+    },
+    page: {
+      type: Number,
+      default: 1,
+    },
+    limit: {
+      type: Number,
+      default: 20,
+    },
+    pageSizes: {
+      type: Array,
+      default() {
+        return [10, 20, 30, 50];
+      },
+    },
+    layout: {
+      type: String,
+      default: "total, sizes, prev, pager, next, jumper",
+    },
+    background: {
+      type: Boolean,
+      default: true,
+    },
+    hidden: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  emits: ["update:page", "update:limit", "pagination"],
+  computed: {
+    currentPage: {
+      get() {
+        return this.page;
+      },
+      set(val) {
+        this.$emit("update:page", val);
+      },
+    },
+    pageSize: {
+      get() {
+        return this.limit;
+      },
+      set(val) {
+        this.$emit("update:limit", val);
+      },
+    },
+  },
+  methods: {
+    handleSizeChange(val) {
+      this.$emit("pagination", { page: this.currentPage, limit: val });
+    },
+    handleCurrentChange(val) {
+      this.$emit("pagination", { page: val, limit: this.pageSize });
+    },
+  },
+};
+</script>
+
+<style scoped>
+.pagination-container {
+  background: #fff;
+  padding: 32px 16px;
+}
+.pagination-container.hidden {
+  display: none;
+}
+</style>
+```
+
+src/views/users/list.vue
+
+```html
+<template>
+  <div class="app-container">
+    <div class="btn-container">
+      <!-- 新增按钮 -->
+      <router-link to="/users/create">
+        <el-button type="success" icon="el-icon-edit">创建用户</el-button>
+      </router-link>
+    </div>
+
+    <el-table
+      v-loading="loading"
+      :data="list"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%"
+    >
+      <el-table-column align="center" label="ID" prop="id"></el-table-column>
+      <el-table-column align="center" label="账户名" prop="name">
+      </el-table-column>
+      <el-table-column align="center" label="年龄" prop="age">
+      </el-table-column>
+      <!-- 操作列 -->
+      <el-table-column label="操作" align="center">
+        <template v-slot="scope">
+          <el-button
+            type="primary"
+            icon="el-icon-edit"
+            @click="handleEdit(scope)"
+            >更新</el-button
+          >
+          <el-button
+            type="danger"
+            icon="el-icon-remove"
+            @click="handleDelete(scope)"
+            >删除</el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <!-- 分页 -->
+    <pagination
+      v-show="total > 0"
+      :total="total"
+      v-model:page="listQuery.page"
+      v-model:limit="listQuery.limit"
+      @pagination="getList"
+    ></pagination>
+  </div>
+</template>
+
+<script>
+import { toRefs } from "vue";
+import { useRouter } from "vue-router";
+import { Message } from "element3";
+import Pagination from "comps/Pagination.vue";
+import { useList } from "model/userModel";
+export default {
+  name: "UserList",
+  components: {
+    Pagination,
+  },
+  setup() {
+    // 玩家列表数据
+    const router = useRouter();
+    const { state, getList, delItem } = useList();
+    // 用户更新
+    function handleEdit({ row }) {
+      router.push({
+        name: "userEdit",
+        params: { id: row.id },
+      });
+    }
+    // 删除玩家
+    function handleDelete({ row }) {
+      delItem(row.id).then(() => {
+        // todo:删除这一行，或者重新获取数据
+        // 通知用户
+        Message.success("删除成功！");
+      });
+    }
+    return {
+      ...toRefs(state),
+      getList,
+      handleEdit,
+      handleDelete,
+    };
+  },
+};
+</script>
+
+<style scoped>
+.btn-container {
+  text-align: left;
+  padding: 0px 10px 20px 0px;
+}
+</style>
+```
+
+views/users/create.vue
+
+```html
+<template>
+  <detail :is-edit="false"></detail>
+</template>
+
+<script>
+import Detail from "comps/Detail.vue";
+export default {
+  components: {
+    Detail,
+  },
+};
+</script>
+```
+
+views/users/edit.vue
+
+```html
+<template>
+  <detail :is-edit="true"></detail>
+</template>
+
+<script>
+import Detail from "comps/Detail.vue";
+export default {
+  components: {
+    Detail,
+  },
+};
+</script>
+```
+src/model/userModel.js
+
+```js
+import { reactive, onMounted, ref } from "vue";
+import request from "utils/request";
+
+export function useList() {
+    // 列表数据
+    const state = reactive({
+        loading: true, // 加载状态
+        list: [], // 列表数据
+        total: 0,
+        listQuery: {
+            page: 1,
+            limit: 5,
+        },
+    });
+
+    // 获取列表
+    function getList() {
+        state.loading = true;
+
+        return request({
+            url: "/getUsers",
+            method: "get",
+            params: state.listQuery,
+        })
+            .then(({ data, total }) => {
+                // 设置列表数据
+                state.list = data;
+                state.total = total;
+            })
+            .finally(() => {
+                state.loading = false;
+            });
+    }
+
+    // 删除项
+    function delItem(id) {
+        state.loading = true;
+
+        return request({
+            url: "/deleteUser",
+            method: "get",
+            params: { id },
+        }).finally(() => {
+            state.loading = false;
+        });
+    }
+
+    // 首次获取数据
+    getList();
+
+    return { state, getList, delItem };
+}
+
+const defaultData = {
+    name: "",
+    age: undefined,
+};
+
+export function useItem(isEdit, id) {
+    const model = ref(Object.assign({}, defaultData));
+
+    // 初始化时，根据isEdit判定是否需要获取玩家详情
+    onMounted(() => {
+        if (isEdit && id) {
+            // 获取玩家详情
+            request({
+                url: "/getUser",
+                method: "get",
+                params: { id },
+            }).then(({ data }) => {
+                model.value = data;
+            });
+        }
+    });
+
+    const updateUser = () => {
+        return request({
+            url: "/updateUser",
+            method: "post",
+            data: model.value,
+        });
+    };
+
+    const addUser = () => {
+        return request({
+            url: "/addUser",
+            method: "post",
+            data: model.value,
+        });
+    };
+
+    return { model, updateUser, addUser };
+}
+```
 
 
 
