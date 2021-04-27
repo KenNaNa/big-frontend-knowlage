@@ -2657,7 +2657,139 @@ export function useItem(isEdit, id) {
 }
 ```
 
+# 配置多语言
 
+安装 vue-i18n, @intlify/vite-plugin-vue-i18n
+
+```js
+yarn add vue-i18n --save
+yarn add @intlify/vite-plugin-vue-i18n --save-dev
+```
+
+src/components/HelloWorld.vue
+
+```html
+<template>
+  <h1>{{ msg }}</h1>
+  <p>{{ $store.state.counter }}</p>
+  <!-- 国际化 -->
+  <form>
+    <label>{{ t("language") }}</label>
+    <select v-model="locale">
+      <option value="en">en</option>
+      <option value="ja">ja</option>
+    </select>
+  </form>
+  <p>{{ t("hello") }}</p>
+  <el-button @click="state.count++">count is: {{ state.count }}</el-button>
+</template>
+
+<script setup>
+import { useI18n } from "vue-i18n";
+import { defineProps, reactive } from "vue";
+defineProps({
+  msg: String,
+});
+const state = reactive({ count: 0 });
+const { locale, t } = useI18n({
+  inheritLocale: true,
+});
+</script>
+
+<i18n>
+{
+  "en": {
+    "language": "Language",
+    "hello": "hello, world!"
+  },
+  "ja": {
+    "language": "言語",
+    "hello": "こんにちは、世界！"
+  }
+}
+</i18n>
+
+<style scoped>
+a {
+  color: #42b983;
+}
+</style>
+
+```
+
+src/main.js
+
+```js
+import { createApp } from 'vue';
+import App from './App.vue';
+
+// 引入全局样式
+import "styles/index.scss";
+
+// 导入 element3
+import element3 from 'plugins/element3.js';
+
+// 导入路由
+import router from "router/index.js";
+
+// 导入仓库
+import store from 'store/index.js';
+
+// i18n
+import { createI18n } from "vue-i18n";
+import messages from "@intlify/vite-plugin-vue-i18n/messages";
+const i18n = createI18n({
+    legacy: false,
+    locale: "en",
+    messages,
+});
+
+createApp(App).use(element3).use(router).use(store).use(i18n).mount('#app');
+
+```
+vite.config.js
+
+```js
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
+import { viteMockServe } from 'vite-plugin-mock';
+import path from 'path';
+import vueI18n from '@intlify/vite-plugin-vue-i18n'
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [
+    vue(),
+    vueJsx(),
+    viteMockServe({ supportTs: false }),
+    vueI18n({
+      // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
+      // compositionOnly: false,
+
+      // you need to set i18n resource including paths !
+      include: path.resolve(__dirname, './src/locales/**')
+    })
+  ],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+      "comps": path.resolve(__dirname, "src/components"),
+      "api": path.resolve(__dirname, "src/api"),
+      "views": path.resolve(__dirname, "src/views"),
+      "styles": path.resolve(__dirname, "src/styles"),
+      "locales": path.resolve(__dirname, "src/locales"),
+      "layout": path.resolve(__dirname, "src/layout"),
+      "utils": path.resolve(__dirname, "src/utils"),
+      "dirs": path.resolve(__dirname, "src/dirs"),
+      "plugins": path.resolve(__dirname, "src/plugins"),
+      "config": path.resolve(__dirname, "src/config"),
+      "router": path.resolve(__dirname, "src/router"),
+      "store": path.resolve(__dirname, "src/store"),
+      "model": path.resolve(__dirname, "src/model")
+    }
+  }
+});
+```
 
 
 
