@@ -1,3 +1,8 @@
+兄弟们，重磅消息，最近我在研究 element-ui 的组件源码，github 仓库如下：
+
+[从零开始研究 elementui 源码](https://github.com/KenNaNa/elementui-code-learn)
+
+
 前端入门到进阶图文教程，超详细的Web前端学习笔记。
 
 从零开始学前端，做一名精致优雅的前端工程师。
