@@ -900,20 +900,642 @@ app.use(router).use(store).use(element3).mount('#app');
 ```js
 yarn add path --save
 ```
+在 src/layout/components/SideBar 新建 Item.vue
 
+```html
+<template>
+  <i v-if="icon" class="sub-el-icon" :class="icon"></i>
+  <span v-if="title">{{ title }}</span>
+</template>
 
+<script>
+import { defineComponent } from "vue";
 
+export default defineComponent({
+  name: "MenuItem",
+  props: {
+    icon: {
+      type: String,
+      default: "",
+    },
+    title: {
+      type: String,
+      default: "",
+    },
+  },
+});
+</script>
 
+<style lang="scss" scoped>
+.sub-el-icon {
+  color: currentColor;
+  width: 1em;
+  height: 1em;
+}
+</style>
 
+```
+新建 Link.vue
 
+```html
+<template>
+  <component :is="type" v-bind="linkProps(to)">
+    <slot />
+  </component>
+</template>
 
+<script>
+import { isExternal } from "utils/validate";
+export default {
+  props: {
+    to: {
+      type: String,
+      required: true,
+    },
+  },
+  computed: {
+    isExternal() {
+      return isExternal(this.to);
+    },
+    type() {
+      if (this.isExternal) {
+        return "a";
+      }
+      return "router-link";
+    },
+  },
+  methods: {
+    linkProps(to) {
+      if (this.isExternal) {
+        return {
+          href: to,
+          target: "_blank",
+          rel: "noopener",
+        };
+      }
+      return {
+        to: to,
+      };
+    },
+  },
+};
+</script>
+```
+新建 SidebarItem.vue
 
+```html
+<template>
+  <div v-if="!item.hidden">
+    <template
+      v-if="
+        hasOneShowingChild(item.children, item) &&
+        (!onlyOneChild.children || onlyOneChild.noShowingChildren) &&
+        !item.alwaysShow
+      "
+    >
+      <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
+        <el-menu-item :index="resolvePath(onlyOneChild.path)">
+          <item
+            :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"
+            :title="onlyOneChild.meta.title"
+          />
+        </el-menu-item>
+      </app-link>
+    </template>
 
+    <el-submenu
+      v-else
+      ref="subMenu"
+      :index="resolvePath(item.path)"
+      popper-append-to-body
+    >
+      <template #title>
+        <item
+          v-if="item.meta"
+          :icon="item.meta && item.meta.icon"
+          :title="item.meta.title"
+        />
+      </template>
+      <side-bar-item
+        v-for="child in item.children"
+        :key="child.path"
+        :is-nest="true"
+        :item="child"
+        :base-path="resolvePath(child.path)"
+        class="nest-menu"
+      />
+    </el-submenu>
+  </div>
+</template>
 
+<script setup>
+import Item from "./Item.vue";
+import AppLink from "./Link.vue";
+import { isExternal } from "utils/validate";
+import { defineProps, ref } from "vue";
+const props = defineProps({
+  // route object
+  item: {
+    type: Object,
+    required: true,
+  },
+  isNest: {
+    type: Boolean,
+    default: false,
+  },
+  basePath: {
+    type: String,
+    default: "",
+  },
+});
+const onlyOneChild = ref(null);
+const hasOneShowingChild = (children = [], parent) => {
+  const showingChildren = children.filter((item) => {
+    if (item.hidden) {
+      return false;
+    } else {
+      // Temp set(will be used if only has one showing child)
+      onlyOneChild.value = item;
+      return true;
+    }
+  });
+  // When there is only one child router, the child router is displayed by default
+  if (showingChildren.length === 1) {
+    return true;
+  }
+  // Show parent if there are no child router to display
+  if (showingChildren.length === 0) {
+    onlyOneChild.value = { ...parent, path: "", noShowingChildren: true };
+    return true;
+  }
+  return false;
+};
+const resolvePath = (routePath) => {
+  if (isExternal(routePath)) {
+    return routePath;
+  }
+  if (isExternal(props.basePath)) {
+    return props.basePath;
+  }
+  return props.basePath + routePath;
+};
+</script>
+```
 
+新建 index.vue
 
+```html
+<template>
+  <el-scrollbar wrap-class="scrollbar-wrapper">
+    <el-menu
+      :default-active="activeMenu"
+      :background-color="variables.menuBg"
+      :text-color="variables.menuText"
+      :unique-opened="false"
+      :active-text-color="variables.menuActiveText"
+      mode="vertical"
+    >
+      <side-bar-item
+        v-for="route in routes"
+        :key="route.path"
+        :item="route"
+        :base-path="route.path"
+      />
+    </el-menu>
+  </el-scrollbar>
+</template>
 
+<script setup>
+import SideBarItem from "./SideBarItem.vue";
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import { routes } from "router/index";
+import variables from "styles/variables.module.scss";
+const activeMenu = computed(() => {
+  const route = useRoute();
+  const { meta, path } = route;
+  if (meta.activeMenu) {
+    return meta.activeMenu;
+  }
+  return path;
+});
+</script>
+```
 
+修改 src/layouts/index.vue
+
+```html
+<template>
+  <div class="app-wrapper">
+    <!-- 侧边栏 -->
+    <side-bar class="sidebar-container"></side-bar>
+    <!-- 内容容器 -->
+    <div class="main-container">
+      <!-- 顶部导航栏 -->
+      <nav-bar />
+      <!-- 内容区 -->
+      <app-main />
+    </div>
+  </div>
+</template>
+
+<script setup>
+import AppMain from "layout/components/AppMain.vue";
+import NavBar from "layout/components/NavBar.vue";
+import SideBar from "layout/components/Sidebar/index.vue";
+</script>
+
+<style lang="scss" scoped>
+@import "styles/mixin.scss";
+.app-wrapper {
+  @include clearfix;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+</style>
+```
+
+修改  src/router/index.js
+
+```html
+import { createRouter, createWebHashHistory } from 'vue-router';
+import Layout from 'layout/index.vue';
+export const routes = [
+    {
+        path: '/',
+        name: 'layout',
+        alwaysShow: true,
+        component: Layout,
+        meta: { title: '导航', icon: "el-icon-setting" },
+        children: [
+            {
+                path: '',
+                name: 'home',
+                component: () => import('views/home/index.vue'),
+                meta: {
+                    title: "首页",
+                    icon: 'el-icon-s-home'
+                }
+            }
+        ]
+    }
+];
+const router = createRouter({
+    history: createWebHashHistory(),
+    routes
+});
+
+export default router;
+```
+添加 src/styles/index.scss
+
+```scss
+@import "./mixin.scss";
+@import "./variables.module.scss";
+@import "./sidebar.scss";
+
+// 编写全局样式
+body {
+    height: 100%;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
+        Microsoft YaHei, Arial, sans-serif;
+    margin: 0;
+}
+
+label {
+    font-weight: 700;
+}
+
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#app {
+    height: 100%;
+    font-family: Avenir,
+        Helvetica,
+        Arial,
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+a:focus,
+a:active {
+    outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+    cursor: pointer;
+    color: inherit;
+    text-decoration: none;
+}
+
+div:focus {
+    outline: none;
+}
+
+.clearfix {
+    &:after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0;
+    }
+}
+
+// main-container global css
+.app-container {
+    padding: 20px;
+}
+```
+
+新建 src/styles/sidebar.scss
+
+```scss
+#app {
+
+    .main-container {
+        min-height: 100%;
+        transition: margin-left .28s;
+        margin-left: $sideBarWidth;
+        position: relative;
+    }
+
+    .sidebar-container {
+        transition: width 0.28s;
+        width: $sideBarWidth !important;
+        background-color: $menuBg;
+        height: 100%;
+        position: fixed;
+        font-size: 0px;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1001;
+        overflow: hidden;
+
+        // reset element-ui css
+        .horizontal-collapse-transition {
+            transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
+        }
+
+        .scrollbar-wrapper {
+            overflow-x: hidden !important;
+        }
+
+        .el-scrollbar__bar.is-vertical {
+            right: 0px;
+        }
+
+        .el-scrollbar {
+            height: 100%;
+        }
+
+        &.has-logo {
+            .el-scrollbar {
+                height: calc(100% - 50px);
+            }
+        }
+
+        .is-horizontal {
+            display: none;
+        }
+
+        a {
+            display: inline-block;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .svg-icon {
+            margin-right: 16px;
+        }
+
+        .sub-el-icon {
+            margin-right: 12px;
+            margin-left: -2px;
+        }
+
+        .el-menu {
+            border: none;
+            height: 100%;
+            width: 100% !important;
+        }
+
+        // menu hover
+        .submenu-title-noDropdown,
+        .el-submenu__title {
+            &:hover {
+                background-color: $menuHover !important;
+            }
+        }
+
+        .is-active>.el-submenu__title {
+            color: $subMenuActiveText !important;
+        }
+
+        & .nest-menu .el-submenu>.el-submenu__title,
+        & .el-submenu .el-menu-item {
+            min-width: $sideBarWidth !important;
+            background-color: $subMenuBg !important;
+
+            &:hover {
+                background-color: $subMenuHover !important;
+            }
+        }
+    }
+
+    .hideSidebar {
+        .sidebar-container {
+            width: 50px !important;
+        }
+
+        .main-container {
+            margin-left: 54px;
+        }
+
+        .submenu-title-noDropdown {
+            padding: 0 !important;
+            position: relative;
+
+            .el-tooltip {
+                padding: 0 !important;
+
+                .svg-icon {
+                    margin-left: 20px;
+                }
+
+                .sub-el-icon {
+                    margin-left: 19px;
+                }
+            }
+        }
+
+        .el-submenu {
+            overflow: hidden;
+
+            &>.el-submenu__title {
+                padding: 0 !important;
+
+                .svg-icon {
+                    margin-left: 20px;
+                }
+
+                .sub-el-icon {
+                    margin-left: 19px;
+                }
+
+                .el-submenu__icon-arrow {
+                    display: none;
+                }
+            }
+        }
+
+        .el-menu--collapse {
+            .el-submenu {
+                &>.el-submenu__title {
+                    &>span {
+                        height: 0;
+                        width: 0;
+                        overflow: hidden;
+                        visibility: hidden;
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+    }
+
+    .el-menu--collapse .el-menu .el-submenu {
+        min-width: $sideBarWidth !important;
+    }
+
+    // mobile responsive
+    .mobile {
+        .main-container {
+            margin-left: 0px;
+        }
+
+        .sidebar-container {
+            transition: transform .28s;
+            width: $sideBarWidth !important;
+        }
+
+        &.hideSidebar {
+            .sidebar-container {
+                pointer-events: none;
+                transition-duration: 0.3s;
+                transform: translate3d(-$sideBarWidth, 0, 0);
+            }
+        }
+    }
+
+    .withoutAnimation {
+
+        .main-container,
+        .sidebar-container {
+            transition: none;
+        }
+    }
+}
+
+// when menu collapsed
+.el-menu--vertical {
+    &>.el-menu {
+        .svg-icon {
+            margin-right: 16px;
+        }
+
+        .sub-el-icon {
+            margin-right: 12px;
+            margin-left: -2px;
+        }
+    }
+
+    .nest-menu .el-submenu>.el-submenu__title,
+    .el-menu-item {
+        &:hover {
+            // you can use $subMenuHover
+            background-color: $menuHover !important;
+        }
+    }
+
+    // the scroll bar appears when the subMenu is too long
+    >.el-menu--popup {
+        max-height: 100vh;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar-track-piece {
+            background: #d3dce6;
+        }
+
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #99a9bf;
+            border-radius: 20px;
+        }
+    }
+}
+```
+
+src/styles/variables.module.scss
+
+```scss
+// sidebar
+$menuText:#bfcbd9;
+$menuActiveText:#409EFF;
+$subMenuActiveText:#f4f4f5; //https://github.com/ElemeFE/element/issues/12951
+
+$menuBg:#304156;
+$menuHover:#263445;
+
+$subMenuBg:#1f2d3d;
+$subMenuHover:#001528;
+
+$sideBarWidth: 210px;
+
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+    menuText: $menuText;
+    menuActiveText: $menuActiveText;
+    subMenuActiveText: $subMenuActiveText;
+    menuBg: $menuBg;
+    menuHover: $menuHover;
+    subMenuBg: $subMenuBg;
+    subMenuHover: $subMenuHover;
+    sideBarWidth: $sideBarWidth;
+}
+```
+
+src/utils/validate.js
+
+```js
+export function isExternal(path) {
+    return /^(https?:|mailto:|tel:)/.test(path);
+};
+```
 
 
 
