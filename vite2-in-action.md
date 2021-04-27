@@ -1537,6 +1537,327 @@ export function isExternal(path) {
 };
 ```
 
+# eighth commit
+
+安装 path-to-regexp
+
+```js
+yarn add path-to-regexp --save
+```
+
+src/layouts/components/Breadcrumb.vue
+
+```html
+<template>
+  <el-breadcrumb class="app-breadcrumb" separator="/">
+    <transition-group name="breadcrumb">
+      <el-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
+        <span
+          v-if="item.redirect === 'noRedirect' || index == levelList.length - 1"
+          class="no-redirect"
+          >{{ item.meta.title }}</span
+        >
+        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
+      </el-breadcrumb-item>
+    </transition-group>
+  </el-breadcrumb>
+</template>
+
+<script setup>
+import { compile } from "path-to-regexp";
+import { reactive, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+const levelList = ref(null);
+const router = useRouter();
+const route = useRoute();
+const getBreadcrumb = () => {
+  let matched = route.matched.filter((item) => item.meta && item.meta.title);
+  console.log("matched====>", matched);
+  const first = matched[0];
+  if (first.path !== "/") {
+    matched = [{ path: "/home", meta: { title: "首页" } }].concat(matched);
+  }
+  levelList.value = matched.filter(
+    (item) => item.meta && item.meta.title && item.meta.breadcrumb !== false
+  );
+
+  console.log("levelList.value===>", levelList.value);
+};
+const pathCompile = (path) => {
+  var toPath = compile(path);
+  return toPath(route.params);
+};
+const handleLink = (item) => {
+  const { redirect, path } = item;
+  if (redirect) {
+    router.push(redirect);
+    return;
+  }
+  router.push(pathCompile(path));
+};
+getBreadcrumb();
+watch(route, getBreadcrumb);
+</script>
+
+<style lang="scss" scoped>
+.app-breadcrumb.el-breadcrumb {
+  display: inline-block;
+  font-size: 14px;
+  line-height: 50px;
+  margin-left: 8px;
+  .no-redirect {
+    color: #97a8be;
+    cursor: text;
+  }
+}
+</style>
+```
+
+src/layouts/components/Navbar.vue
+
+```html
+<template>
+  <div class="navbar">
+    <!-- 面包屑 -->
+    <breadcrumb class="breadcrumb-container"></breadcrumb>
+    <!-- 右侧下拉菜单 -->
+    <div class="right-menu">
+      <el-dropdown class="avatar-container" trigger="click">
+        <div class="avatar-wrapper">
+          <img src="/src/assets/logo.png" class="user-avatar" />
+          <i class="el-icon-caret-bottom" />
+        </div>
+        <el-dropdown-menu class="user-dropdown">
+          <router-link to="/">
+            <el-dropdown-item> 首页 </el-dropdown-item>
+          </router-link>
+          <a target="_blank" href="https://github.com/57code/vite2-in-action/">
+            <el-dropdown-item>我的Github</el-dropdown-item>
+          </a>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import Breadcrumb from "./Breadcrumb.vue";
+</script>
+
+<style lang="scss" scoped>
+.navbar {
+  height: 50px;
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+
+  .breadcrumb-container {
+    float: left;
+  }
+
+  .right-menu {
+    float: right;
+    height: 100%;
+    line-height: 50px;
+    &:focus {
+      outline: none;
+    }
+    .right-menu-item {
+      display: inline-block;
+      padding: 0 8px;
+      height: 100%;
+      font-size: 18px;
+      color: #5a5e66;
+      vertical-align: text-bottom;
+      &.hover-effect {
+        cursor: pointer;
+        transition: background 0.3s;
+        &:hover {
+          background: rgba(0, 0, 0, 0.025);
+        }
+      }
+    }
+    .avatar-container {
+      margin-right: 30px;
+      .avatar-wrapper {
+        margin-top: 5px;
+        position: relative;
+        .user-avatar {
+          cursor: pointer;
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
+        }
+        .el-icon-caret-bottom {
+          cursor: pointer;
+          position: absolute;
+          right: -20px;
+          top: 25px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+</style>
+```
+
+src/layouts/components/Sidebar/Link.vue
+
+```html
+<template>
+  <component :is="type" v-bind="linkProps(to)">
+    <slot />
+  </component>
+</template>
+
+<script setup>
+import { isExternal as isExt } from "utils/validate";
+import { computed, defineProps } from "vue";
+const props = defineProps({
+  to: {
+    type: String,
+    required: true,
+  },
+});
+const isExternal = computed(() => isExt(props.to));
+// type是一个计算属性
+const type = computed(() => {
+  if (isExternal.value) {
+    return "a";
+  }
+  return "router-link";
+});
+const linkProps = (to) => {
+  if (isExternal.value) {
+    return {
+      href: to,
+      target: "_blank",
+      rel: "noopener",
+    };
+  }
+  return { to };
+};
+</script>
+```
+src/router/index.js
+
+```js
+import { createRouter, createWebHashHistory } from 'vue-router';
+import Layout from 'layout/index.vue'
+
+/**
+ * Note: 子菜单仅当路由的children.length >= 1时才出现
+ *
+ * hidden: true                   设置为true时路由将显示在sidebar中(默认false)
+ * alwaysShow: true               如果设置为true则总是显示在菜单根目录
+ *                                如果不设置alwaysShow, 当路由有超过一个子路由时,
+ *                                将会变为嵌套模式, 否则不会显示根菜单
+ * redirect: noRedirect           如果设置noRedirect时，breadcrumb中点击将不会跳转
+ * name:'router-name'             name用于<keep-alive> (必须设置!!!)
+ * meta : {
+    roles: ['admin','editor']    页面可访问角色设置 
+    title: 'title'               sidebar和breadcrumb显示的标题 
+    icon: 'svg-name'/'el-icon-x' sidebar中显示的图标
+    breadcrumb: false            设置为false，将不会出现在面包屑中
+    activeMenu: '/example/list'  如果设置一个path, sidebar将会在高亮匹配项
+  }
+ */
+export const routes = [
+    {
+        path: '/',
+        redirect: '/home',
+        component: Layout,
+        meta: { title: "导航", icon: "el-icon-s-home" },
+        children: [
+            {
+                path: "home",
+                component: () => import('views/home/index.vue'),
+                name: "Home",
+                meta: { title: "首页", icon: "el-icon-s-home" },
+                children: [
+                    {
+                        path: ":id",
+                        component: () => import('views/detail/index.vue'),
+                        name: "Detail",
+                        hidden: true,
+                        meta: { title: "详情", icon: "el-icon-s-home", activeMenu: '/home' },
+                    },
+                ]
+            }
+        ],
+    },
+
+    {
+        path: "/a",
+        component: Layout,
+        children: [
+            {
+                path: "",
+                component: () => import('views/home/index.vue'),
+                name: "PageA",
+                meta: { title: "页面A", icon: "el-icon-s-home" },
+            }
+        ],
+    },
+]
+
+const router = createRouter({
+    history: createWebHashHistory(),
+    routes
+});
+
+export default router
+```
+
+src/views/detail.vue
+ 
+```html
+<template>
+  <div>
+    detail <span>{{$route.params.id}}</span>
+  </div>
+</template>
+
+<script setup>
+  
+</script>
+
+<style scoped>
+</style>
+```
+
+
+src/views/home.vue
+
+```html
+<template>
+  <div>
+    <HelloWorld msg="hello vue3 + vite"></HelloWorld>
+    <router-link to="/home/1">detail1</router-link>
+    <router-link to="/home/2">detail2</router-link>
+    <router-view></router-view>
+  </div>
+</template>
+
+<script setup>
+import HelloWorld from "@/components/HelloWorld.vue";
+</script>
+
+<style scoped>
+</style>
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
