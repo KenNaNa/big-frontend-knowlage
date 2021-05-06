@@ -1,3 +1,4 @@
+[二次封装了 element-ui 库中的 table，通过配置文件的方式即可生成 table 表格, 实现更高的自由度，旨在减少重复的操作，让开发变得更简单](https://github.com/pdsuwwz/hoc-element-table)
 [基于 RageFrame2 的一款免费开源的基础商城销售功能的开源微商城](https://github.com/stavyan/TinyShop-UniApp)
 [Shopro分销商城 uniapp前端开源代码，一款落地生产的 基于uni-app的多端商城](https://github.com/ITmonkey-cn/shopro-uniapp)
 
