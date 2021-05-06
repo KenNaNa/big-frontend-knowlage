@@ -1,3 +1,5 @@
+[Shopro分销商城 uniapp前端开源代码，一款落地生产的 基于uni-app的多端商城](https://github.com/ITmonkey-cn/shopro-uniapp)
+
 [一个包含Javascript插件、Vue3组件、Vue3指令的工具库](https://github.com/leon-kfd/howdyjs)
 
 
