@@ -24,6 +24,8 @@
 
 [electron将vue项目打包成桌面应用（.dmg/.exe）](https://www.jianshu.com/p/d8f3942d5efc)
 
+[ant-design-vue-pro](https://github.com/vueComponent/ant-design-vue-pro)
+
 
 前端入门到进阶图文教程，超详细的Web前端学习笔记。
 
