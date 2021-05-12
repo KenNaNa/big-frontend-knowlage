@@ -22,6 +22,9 @@
 [前端 + 后端：前端 + 后端：vue + vuex + vue-router + axios + webpack + sass + postCss + node.js + express + mongodb + mongoose + ant-design-vue，含有axios的封装、路由懒加载、分离公共代码、css懒加载、cdn引入、框架组件的按需加载，用antd写的注册和登录页面，结合了mongodb，后端代码分类清晰易懂](https://github.com/lyfhzxtl/vue-init)
 
 
+[electron将vue项目打包成桌面应用（.dmg/.exe）](https://www.jianshu.com/p/d8f3942d5efc)
+
+
 前端入门到进阶图文教程，超详细的Web前端学习笔记。
 
 从零开始学前端，做一名精致优雅的前端工程师。
