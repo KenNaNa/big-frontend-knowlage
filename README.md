@@ -30,6 +30,8 @@
 
 [将现有vue项目基于electron打包成桌面应用程序](https://simulatedgreg.gitbooks.io/electron-vue/content/cn/migration-guide.html)
 
+[nklayman/vue-cli-plugin-electron-builder](https://github.com/nklayman/vue-cli-plugin-electron-builder)
+
 
 前端入门到进阶图文教程，超详细的Web前端学习笔记。
 
