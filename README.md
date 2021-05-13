@@ -34,6 +34,8 @@
 
 [nklayman/vue-cli-plugin-electron-builder](https://zhuanlan.zhihu.com/p/75764907)
 
+[微信小程序 蓝牙实现](https://github.com/lidong1665/wx_ble)
+
 
 前端入门到进阶图文教程，超详细的Web前端学习笔记。
 
