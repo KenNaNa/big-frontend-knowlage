@@ -36,6 +36,8 @@
 
 [微信小程序 蓝牙实现](https://github.com/lidong1665/wx_ble)
 
+[基于Vue-Cli和H5+集成的蓝牙连接](https://github.com/qjdice/Vue-H5Plus-Bluetooth)
+
 
 前端入门到进阶图文教程，超详细的Web前端学习笔记。
 
