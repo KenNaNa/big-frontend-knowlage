@@ -38,6 +38,8 @@
 
 [基于Vue-Cli和H5+集成的蓝牙连接](https://github.com/qjdice/Vue-H5Plus-Bluetooth)
 
+[nuochong/ant-design-pro-vue-electron](https://github.com/nuochong/ant-design-pro-vue-electron)
+
 
 前端入门到进阶图文教程，超详细的Web前端学习笔记。
 
