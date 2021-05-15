@@ -40,6 +40,7 @@
 
 [nuochong/ant-design-pro-vue-electron](https://github.com/nuochong/ant-design-pro-vue-electron)
 
+[chaozh/awesome-blockchain-cn](https://github.com/chaozh/awesome-blockchain-cn)
 
 前端入门到进阶图文教程，超详细的Web前端学习笔记。
 
