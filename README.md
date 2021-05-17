@@ -46,6 +46,8 @@
 
 [uni-app 蓝牙打印功能](https://blog.csdn.net/zhanleibo/article/details/103035645)
 
+[电商商品数据库的设计和功能界面的处理](https://www.cnblogs.com/wuhuacong/p/13957497.html)
+
 前端入门到进阶图文教程，超详细的Web前端学习笔记。
 
 从零开始学前端，做一名精致优雅的前端工程师。
