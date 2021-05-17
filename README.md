@@ -44,6 +44,8 @@
 
 [About vue.js uni-app 跨平台app框架 蓝牙连接打印机 demo , ESC TSPL 协议与打印机交互, 鉴于网上资料太少，深知踩坑之痛苦，以此开源分享，如果对你有帮助 请点个Satrt，谢谢。开源万岁](https://github.com/qihang666/BluetoothPrinter)
 
+[uni-app 蓝牙打印功能](https://blog.csdn.net/zhanleibo/article/details/103035645)
+
 前端入门到进阶图文教程，超详细的Web前端学习笔记。
 
 从零开始学前端，做一名精致优雅的前端工程师。
