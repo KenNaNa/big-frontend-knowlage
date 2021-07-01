@@ -52,6 +52,8 @@
 
 [H5 Page Maker, H5 Editor. Make H5 as easy as building blocks. | 让H5制作像搭积木一样简单, 轻松搭建H5页面, H5网站, PC端网站, 可视化设计.](https://github.com/MrXujiang/h5-Dooring)
 
+[vue3+ElementPlus+Typescript+Vite搭建一套通用的后台管理模板；并基于常见业务场景，抽象出常见功能组件；包括动态菜单，菜单权限、登录、个人中心、表单页、列表页、复制文本、二维码分享等等](https://github.com/GeekQiaQia/vue3.0-template-admin)
+
 前端入门到进阶图文教程，超详细的Web前端学习笔记。
 
 从零开始学前端，做一名精致优雅的前端工程师。
