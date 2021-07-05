@@ -16,9 +16,9 @@
 console.log("window===>",this) // Window 对象
 function foo() {
     function bar() {
-        console.log("bar ===>",this) // undefined
+        console.log("bar ===>",this) // window
     }
-    console.log("foo", this) // undefined
+    console.log("foo", this) // window
     return bar
 }
 var bar = foo();
@@ -32,7 +32,7 @@ var a = () => {
     b() // window 对象
 
     function c() {console.log("c===>", this)}
-    c() // undefined
+    c() // window
 }
 
 a()
