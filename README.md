@@ -1,3 +1,5 @@
+[Nuxt配置Element-UI按需引入方法](https://www.cnblogs.com/jofun/p/13234973.html)
+
 [levy9527/nuxt-element-dashboard](https://github.com/levy9527/nuxt-element-dashboard)
 
 [vue3学习的各种实验代码](https://github.com/su37josephxia/vue3-study)
