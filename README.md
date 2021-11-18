@@ -1,3 +1,5 @@
+[levy9527/nuxt-element-dashboard](https://github.com/levy9527/nuxt-element-dashboard)
+
 [vue3学习的各种实验代码](https://github.com/su37josephxia/vue3-study)
 
 [melodyWxy/fm-chat-wx 开源聊天室原生小程序](https://github.com/melodyWxy/fm-chat-wx)
